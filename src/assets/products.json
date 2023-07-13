@@ -1,0 +1,52 @@
+{
+  "all_products": [
+    {
+      "id": "1",
+      "name": "T-Shirt",
+      "description": "A comfortable and stylish t-shirt.",
+      "price": 19.99,
+      "image": "tshirt.jpg",
+      "category": "Shirts"
+    },
+    {
+      "id": "2",
+      "name": "Jeans",
+      "description": "Classic denim jeans for everyday wear.",
+      "price": 49.99,
+      "image": "jeans.jpg",
+      "category": "Pants"
+    },
+    {
+      "id": "3",
+      "name": "Dress",
+      "description": "An elegant dress for special occasions.",
+      "price": 79.99,
+      "image": "dress.jpg",
+      "category": "Dresses"
+    },
+    {
+      "id": "4",
+      "name": "Sweater",
+      "description": "A cozy and warm sweater for chilly days.",
+      "price": 39.99,
+      "image": "sweater.jpg",
+      "category": "Sweaters"
+    },
+    {
+      "id": "5",
+      "name": "Shorts",
+      "description": "Casual shorts for a relaxed summer look.",
+      "price": 29.99,
+      "image": "shorts.jpg",
+      "category": "Pants"
+    },
+    {
+      "id": "6",
+      "name": "Blouse",
+      "description": "A stylish blouse for a sophisticated outfit.",
+      "price": 34.99,
+      "image": "blouse.jpg",
+      "category": "Shirts"
+    }
+  ]
+}

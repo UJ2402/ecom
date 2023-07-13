@@ -1,0 +1,72 @@
+import { Storefront, Person, Help, ShoppingBag, Search } from "@mui/icons-material";
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Stack,
+  Input,
+  InputAdornment,
+  Box,
+} from "@mui/material";
+import { useState } from "react";
+
+function NavBar() {
+  const [searchValue, setSearchValue] = useState("");
+  
+  const handleSearchInputChange = (event) => {
+    setSearchValue(event.target.value);
+  };
+  
+  const handleSearchInputClick = () => {
+    if (searchValue === "") {
+      setSearchValue("");
+    }
+  };
+
+  return (
+    <AppBar position="fixed" style={{ background: "black" }}>
+      <Toolbar>
+        <IconButton size="large" edge="start" color="inherit" aria-label="logo">
+          <Storefront />
+        </IconButton>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          Vastra
+        </Typography>
+        <Box sx={{ display: "flex", alignItems: "center" }}>
+          <Input
+            type="search"
+            id="search-input"
+            value={searchValue}
+            onChange={handleSearchInputChange}
+            sx={{
+              borderRadius: 4,
+              bgcolor: "white",
+              color: "black",
+              paddingLeft: "30px",
+            }}
+            startAdornment={
+              <InputAdornment position="start">
+                {searchValue === "" && <Search />}
+              </InputAdornment>
+            }
+            onClick={handleSearchInputClick}
+          />
+        </Box>
+        <Stack direction="row" spacing={2}>
+          <IconButton color="inherit">
+            <Person />
+          </IconButton>
+          <IconButton color="inherit">
+            <ShoppingBag />
+          </IconButton>
+          <IconButton color="inherit">
+            <Help />
+          </IconButton>
+        </Stack>
+      </Toolbar>
+    </AppBar>
+  );
+}
+
+export default NavBar;
