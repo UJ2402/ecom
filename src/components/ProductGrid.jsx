@@ -1,27 +1,39 @@
-import { Grid, Card, CardMedia, CardContent, Typography } from "@mui/material";
+import {
+  Grid,
+  Card,
+  CardMedia,
+  CardContent,
+  Typography,
+  Button,
+} from "@mui/material";
 import { useState, useEffect } from "react";
 import { all_products } from "../assets/products.json";
+import { ProductCard } from "./ProductCard";
+import ProductPage from "./ProductPage";
 
 const ProductGrid = () => {
-  //   const [products, setProducts] = useState([...all_products]);
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
+  const handleCardClick = (product) => {
+    setSelectedProduct(product);
+  };
 
   return (
-    <Grid container spacing={2}>
-      {[
-        all_products.map((product) => (
-          <Grid item xs={12} sm={6} md={4} key={product.id}>
-            <Card>
-              <CardContent>
-                <Typography variant="h6">{product.name}</Typography>
-                <Typography variant="body2">{product.description}</Typography>
-                <Typography variant="h6" color="primary">
-                  ${product.price.toFixed(2)}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        )),
-      ]}
+    <Grid
+      item
+      container
+      spacing={2}
+      justifyContent="space-between"
+      marginX={12}
+      sx={{ cursor: "pointer" }}
+    >
+      {[all_products.map((product) => ProductCard(product))]}
+      {/* {all_products.map((product) => (
+        <div key={product.id} onClick={() =>handleCardClick(product)}>
+          <ProductCard product={product} />
+        </div>
+      ))}
+      {selectedProduct && <ProductPage product={selectedProduct} />} */}
     </Grid>
   );
 };

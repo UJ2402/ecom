@@ -1,10 +1,5 @@
 import { useState } from "react";
-import {
-  Storefront,
-  Person,
-  Help,
-  ShoppingBag,
-} from "@mui/icons-material";
+import { Storefront, Person, Help, ShoppingBag } from "@mui/icons-material";
 import {
   AppBar,
   Toolbar,
@@ -29,7 +24,7 @@ function NavBar() {
   };
 
   return (
-    <AppBar position="fixed">
+    <AppBar position="sticky">
       <Toolbar>
         <IconButton size="large" edge="start" color="inherit" aria-label="logo">
           <Storefront />
@@ -49,14 +44,6 @@ function NavBar() {
             id="search-input"
             value={searchValue}
             onChange={handleSearchInputChange}
-            sx={{
-              borderRadius: 4,
-              bgcolor: "white",
-              color: "black",
-              paddingLeft: "30px",
-              marginRight: "30px",
-            }}
-            
             onClick={handleSearchInputClick}
           />
         </Box>
