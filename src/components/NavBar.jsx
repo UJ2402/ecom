@@ -9,10 +9,12 @@ import {
   Input,
   Box,
 } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 function NavBar() {
   const [searchValue, setSearchValue] = useState("");
 
+  const navigate = useNavigate();
   const handleSearchInputChange = (event) => {
     setSearchValue(event.target.value);
   };
@@ -51,7 +53,7 @@ function NavBar() {
           <IconButton>
             <Person />
           </IconButton>
-          <IconButton>
+          <IconButton onClick={() => navigate(`/cart`)}>
             <ShoppingBag />
           </IconButton>
           <IconButton>

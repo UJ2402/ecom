@@ -24,12 +24,10 @@ const Img = styled("img")({
 const ProductPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
-  const [productInfo, setProductInfo] = useState(
-    all_products.filter((p) => p.id == params.productId)
-  );
+  const [productInfo, setProductInfo] = useState({});
 
   useEffect(() => {
-    setProductInfo(all_products.filter((p) => p.id == params.productId)[0]);
+    setProductInfo(all_products[params.productId]);
   }, [params.productId]);
 
   const [quantity, setQuantity] = useState(1);
@@ -84,7 +82,7 @@ const ProductPage = () => {
               </Select>
             </FormControl>
           </Grid>
-          <Grid item container md={3}>
+          <Grid item container md={4}>
             <Grid item container sx={{ p: 1, border: 1, borderRadius: 1 }}>
               <Grid item>
                 <IconButton onClick={handleDecrease}>

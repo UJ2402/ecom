@@ -4,6 +4,7 @@ import ProductGrid from "./components/ProductGrid";
 import { Grid } from "@mui/material";
 import ProductPage from "./components/ProductPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Cart from "./components/cart/Cart";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
               path="/allProducts"
               element={<ProductGrid></ProductGrid>}
             ></Route>
+            <Route path="/cart" element={<Cart />}></Route>
           </Routes>
         </Grid>
       </div>

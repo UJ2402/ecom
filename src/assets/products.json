@@ -1,6 +1,6 @@
 {
-  "all_products": [
-    {
+  "all_products": {
+    "1": {
       "id": "1",
       "name": "T-Shirt",
       "description": "A comfortable and stylish t-shirt.",
@@ -8,9 +8,8 @@
       "image": "https://lp2.hm.com/hmgoepprod?set=source[/f6/be/f6bef7f645a97cf7db3903b865d79636c1734319.jpg],origin[dam],category[men_tshirtstanks_shortsleeve],type[DESCRIPTIVESTILLLIFE],res[w],hmver[2]&call=url[file:/product/main]",
       "category": "Shirts",
       "sizes": ["S", "M", "L"]
-
     },
-    {
+    "2": {
       "id": "2",
       "name": "Jeans",
       "description": "Classic denim jeans for everyday wear.",
@@ -18,9 +17,8 @@
       "image": "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F04%2Ffa%2F04fa5792dc372c3b5f5c4de1332f641602470736.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
       "category": "Pants",
       "sizes": ["S", "M", "L"]
-
     },
-    {
+    "3": {
       "id": "3",
       "name": "Dress",
       "description": "An elegant dress for special occasions.",
@@ -28,9 +26,8 @@
       "image": "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F23%2F38%2F233849f8621c2daa3c55da12e4774b3a3194f206.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/main]",
       "category": "Dresses",
       "sizes": ["S", "M", "L"]
-
     },
-    {
+    "4": {
       "id": "4",
       "name": "Sweater",
       "description": "A cozy and warm sweater for chilly days.",
@@ -38,9 +35,8 @@
       "image": "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2Fa3%2F88%2Fa388e232082ed2c42955d52858e751d62ad73c50.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
       "category": "Sweaters",
       "sizes": ["S", "M", "L"]
-
     },
-    {
+    "5": {
       "id": "5",
       "name": "Shorts",
       "description": "Casual shorts for a relaxed summer look.",
@@ -48,9 +44,8 @@
       "image": "https://lp2.hm.com/hmgoepprod?set=format%5Bwebp%5D%2Cquality%5B79%5D%2Csource%5B%2F34%2Fb3%2F34b36f87f3c79c389b9b1f0a29cdcd690b010397.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url%5Bfile%3A%2Fproduct%2Fmain%5D",
       "category": "Pants",
       "sizes": ["S", "M", "L"]
-
     },
-    {
+    "6": {
       "id": "6",
       "name": "Blouse",
       "description": "A stylish blouse for a sophisticated outfit.",
@@ -58,7 +53,6 @@
       "image": "https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2Ffa%2Fe3%2Ffae37c8684d8b624e39f0d83bc2e45b27f5c07d1.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BDESCRIPTIVESTILLLIFE%5D%2Cres%5Bm%5D%2Chmver%5B2%5D&call=url[file:/product/main]",
       "category": "Shirts",
       "sizes": ["S", "M", "L"]
-
     }
-  ]
+  }
 }

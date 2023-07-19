@@ -12,12 +12,6 @@ import { ProductCard } from "./ProductCard";
 import ProductPage from "./ProductPage";
 
 const ProductGrid = () => {
-  const [selectedProduct, setSelectedProduct] = useState(null);
-
-  const handleCardClick = (product) => {
-    setSelectedProduct(product);
-  };
-
   return (
     <Grid
       item
@@ -27,13 +21,7 @@ const ProductGrid = () => {
       marginX={12}
       sx={{ cursor: "pointer" }}
     >
-      {[all_products.map((product) => ProductCard(product))]}
-      {/* {all_products.map((product) => (
-        <div key={product.id} onClick={() =>handleCardClick(product)}>
-          <ProductCard product={product} />
-        </div>
-      ))}
-      {selectedProduct && <ProductPage product={selectedProduct} />} */}
+      {[Object.keys(all_products).map((id) => ProductCard(all_products[id]))]}
     </Grid>
   );
 };
