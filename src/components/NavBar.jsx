@@ -31,7 +31,7 @@ function NavBar() {
         <IconButton size="large" edge="start" color="inherit" aria-label="logo">
           <Storefront />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1,  cursor:"pointer"}} onClick={() => navigate(`/`)} >
           Vastra
         </Typography>
         <Box
@@ -50,11 +50,12 @@ function NavBar() {
           />
         </Box>
         <Stack direction="row" spacing={2}>
-          <IconButton>
-            <Person />
+          <IconButton onClick={()=> navigate(`/loginPage`)}>
+            <Person />?
           </IconButton>
+          
           <IconButton onClick={() => navigate(`/cart`)}>
-            <ShoppingBag />
+            <ShoppingBag  /> 
           </IconButton>
           <IconButton>
             <Help />

@@ -11,7 +11,7 @@ import { styled } from "@mui/material/styles";
 import * as React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
-import { additemtocart } from "./cart/CartSlice";
+import { additemtocart } from "../components/cart/CartSlice";
 import { useDispatch } from "react-redux";
 
 const Img = styled("img")({
@@ -75,6 +75,7 @@ const ProductPage = () => {
                 defaultValue={size}
                 label="Size"
                 onChange={handleChange}
+                
               >
                 <MenuItem value={"S"}>Small</MenuItem>
                 <MenuItem value={"M"}>Medium</MenuItem>

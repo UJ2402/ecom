@@ -1,10 +1,11 @@
 import NavBar from "./components/NavBar";
-import Banner from "./components/Banner";
 import ProductGrid from "./components/ProductGrid";
 import { Grid } from "@mui/material";
-import ProductPage from "./components/ProductPage";
+import ProductPage from "./Pages/ProductPage";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Cart from "./components/cart/Cart";
+import HomePage from "./Pages/HomePage";
+import LoginPage from "./Pages/LoginPage";
 
 function App() {
   return (
@@ -14,24 +15,21 @@ function App() {
           width: "100vw",
         }}
       >
-        <NavBar />
         <Grid
           container
           spacing={2}
           justifyContent="center"
-          sx={{ width: "100%", marginTop: 1 }}
+          sx={{ width: "100" }}
         >
-          {/* <Banner /> */}
-          {/* <h1 style={{ alignItems: "left" }}>Our Bestsellers</h1> */}
+          <NavBar />
           <Routes>
+            <Route path="/" element={<HomePage />}></Route>
             <Route
               path="/productPage/:productId"
               element={<ProductPage />}
             ></Route>
-            <Route
-              path="/allProducts"
-              element={<ProductGrid></ProductGrid>}
-            ></Route>
+            <Route path="/loginPage" element={<LoginPage />}></Route>
+            <Route path="/allProducts" element={<ProductGrid />}></Route>
             <Route path="/cart" element={<Cart />}></Route>
           </Routes>
         </Grid>

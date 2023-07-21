@@ -11,6 +11,7 @@ import { all_products } from "../../assets/products.json";
 
 const Cart = () => {
   const items = useSelector(selectCartItems);
+  
 
   return (
     <Grid container item>
