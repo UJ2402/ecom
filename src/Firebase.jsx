@@ -2,11 +2,8 @@ import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
 import {
   getAuth,
-  GoogleAuthProvider,
-  setPersistence,
-  inMemoryPersistence,
-  signInWithPopup,
 } from "firebase/auth";
+import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyBeLx6ZRJteH-1rGyNZVibq9DzLD07wKXQ",
   authDomain: "vastra-a861d.firebaseapp.com",
@@ -18,3 +15,4 @@ const firebaseConfig = {
 
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
+export const db = getFirestore(app);

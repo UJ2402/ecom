@@ -46,7 +46,7 @@ const ProductPage = () => {
     setSize(event.target.value);
   };
 
-  console.log(size, quantity);
+  // console.log(size, quantity);
   return (
     <Grid item my={10} container spacing={2}>
       <Grid item lg={7}>
@@ -75,7 +75,6 @@ const ProductPage = () => {
                 defaultValue={size}
                 label="Size"
                 onChange={handleChange}
-                
               >
                 <MenuItem value={"S"}>Small</MenuItem>
                 <MenuItem value={"M"}>Medium</MenuItem>
@@ -101,11 +100,6 @@ const ProductPage = () => {
             </Grid>
           </Grid>
         </Grid>
-        {/* <Box mt={2}>
-          <Button variant="contained" color="primary">
-            Buy Now
-          </Button>
-        </Box> */}
         <Box mt={2}>
           <Button
             variant="text"

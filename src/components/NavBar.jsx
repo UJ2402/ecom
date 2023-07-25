@@ -1,4 +1,7 @@
+import { UserContext } from "../App";
+import {Avatar} from "@mui/material";
 import { useState } from "react";
+import { useContext } from "react";
 import { Storefront, Person, Help, ShoppingBag } from "@mui/icons-material";
 import {
   AppBar,
@@ -13,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 
 function NavBar() {
   const [searchValue, setSearchValue] = useState("");
-
+  const user = useContext(UserContext);
   const navigate = useNavigate();
   const handleSearchInputChange = (event) => {
     setSearchValue(event.target.value);
@@ -31,7 +34,12 @@ function NavBar() {
         <IconButton size="large" edge="start" color="inherit" aria-label="logo">
           <Storefront />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1,  cursor:"pointer"}} onClick={() => navigate(`/`)} >
+        <Typography
+          variant="h6"
+          component="div"
+          sx={{ flexGrow: 1, cursor: "pointer" }}
+          onClick={() => navigate(`/`)}
+        >
           Vastra
         </Typography>
         <Box
@@ -50,12 +58,15 @@ function NavBar() {
           />
         </Box>
         <Stack direction="row" spacing={2}>
-          <IconButton onClick={()=> navigate(`/loginPage`)}>
-            <Person />?
-          </IconButton>
-          
+          {user ? (
+            <Avatar sx={{cursor:"pointer"}} onClick={() => navigate(`/profilePage`)} src={user.photoURL}  />
+          ) : (
+            <IconButton onClick={() => navigate(`/loginPage`)}>
+              <Person />?
+            </IconButton>
+          )}
           <IconButton onClick={() => navigate(`/cart`)}>
-            <ShoppingBag  /> 
+            <ShoppingBag />
           </IconButton>
           <IconButton>
             <Help />
