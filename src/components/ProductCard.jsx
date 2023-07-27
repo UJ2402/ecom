@@ -11,7 +11,7 @@ export const ProductCard = (product) => {
           <Typography variant="h6">{product.name}</Typography>
           <Typography variant="body2">{product.description}</Typography>
           <Typography variant="h6" color="primary">
-            ${product.price.toFixed(2)}
+          ₹{product.price.toFixed(2)}
           </Typography>
           <AddToCartButton />
         </CardContent>

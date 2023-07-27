@@ -63,6 +63,7 @@ const ProfilePage = () => {
       </Grid>
     </Grid>
   );
+  
 };
 
 export default ProfilePage;

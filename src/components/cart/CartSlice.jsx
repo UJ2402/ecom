@@ -1,27 +1,36 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+export const calculateCartTotal = (items, all_products) => {
+  let total = 0;
+  Object.keys(items).forEach((key) => {
+    const count = items[key];
+    const [id] = key.split("_");
+    const productInfo = all_products[id];
+    if (productInfo) {
+      total += productInfo.price * count;
+    }
+  });
+  return total;
+};
+
+
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
-    items: [],
+    items: {},
   },
   reducers: {
     additemtocart: (state, action) => {
-      state.items = [
-        ...state.items,
-        {
-          id: action.payload.id,
-          count: action.payload.count,
-          size: action.payload.size,
-        },
-      ];
+      state.items[action.payload.key] =
+        (state.items[action.payload.key]
+          ? state.items[action.payload.key]
+          : 0) + action.payload.count;
     },
-    // removeItemFromCart: (state, action) => {
-    //   const itemIdToRemove = action.payload;
-    //   state.items = state.items.filter((item) => item.id !== itemIdToRemove);
-    // },
+    removeItemFromCart: (state, action) => {
+      state.items[action.payload] = 0;
+    },
     clearCart: (state) => {
-      state.items = [];
+      state.items = {};
     },
   },
 });

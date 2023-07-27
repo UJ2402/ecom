@@ -13,7 +13,8 @@ import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
 import { additemtocart } from "../components/cart/CartSlice";
 import { useDispatch } from "react-redux";
-
+import { UserContext } from "../App";
+import { useContext } from "react";
 const Img = styled("img")({
   margin: "auto",
   display: "block",
@@ -35,6 +36,28 @@ const ProductPage = () => {
     if (quantity > 1) {
       setQuantity(quantity - 1);
     }
+  };
+
+  
+
+  const user = useContext(UserContext);
+
+  const handleAddToCart = () => {
+    if(user) {
+      dispatch(
+        additemtocart({
+          key: `${productInfo.id}_${size}`,
+          count: quantity,
+        })
+      );
+
+    }
+    else {
+      alert("Please log in to add items to cart.");
+      
+    }
+     
+    
   };
 
   const handleIncrease = () => {
@@ -104,15 +127,8 @@ const ProductPage = () => {
           <Button
             variant="text"
             color="primary"
-            onClick={() => [
-              dispatch(
-                additemtocart({
-                  id: productInfo.id,
-                  size: size,
-                  count: quantity,
-                })
-              ),
-            ]}
+            onClick={handleAddToCart}
+            
           >
             Add to Cart
           </Button>
