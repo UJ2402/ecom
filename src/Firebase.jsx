@@ -1,9 +1,12 @@
-import { useState, useEffect } from "react";
 import { initializeApp } from "firebase/app";
+import { getAuth } from "firebase/auth";
 import {
-  getAuth,
-} from "firebase/auth";
-import { getFirestore } from "firebase/firestore";
+  getFirestore,
+  doc,
+  setDoc,
+  getDoc,
+} from "firebase/firestore";
+
 const firebaseConfig = {
   apiKey: "AIzaSyBeLx6ZRJteH-1rGyNZVibq9DzLD07wKXQ",
   authDomain: "vastra-a861d.firebaseapp.com",
@@ -16,3 +19,22 @@ const firebaseConfig = {
 export const app = initializeApp(firebaseConfig);
 export const auth = getAuth(app);
 export const db = getFirestore(app);
+
+export const updateCartInFirestore = async (userId, cartData) => {
+  const docRef = doc(db, "user_cart_data", userId);
+  try {
+    await setDoc(docRef, { cart: cartData });
+    console.log("done");
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getCart = async (userId) => {
+  const docRef = doc(db, "user_cart_data", userId);
+  try {
+    return await getDoc(docRef);
+  } catch (error) {
+    console.log(error);
+  }
+};

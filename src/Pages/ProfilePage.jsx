@@ -1,20 +1,33 @@
+import { clearCartData } from "../components/cart/CartSlice";
+import { db } from "../Firebase";
 import { Button, Grid, Typography } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
-import { auth } from "../Firebase"; 
-import { UserContext } from "../App";
+import {  useEffect, useState } from "react";
+import { auth } from "../Firebase";
 import { useNavigate } from "react-router-dom";
-
+import { useDispatch } from "react-redux";
+import { doc, getDoc } from "firebase/firestore";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
+  const [ isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUser(user);
+        const adminDocRef = doc(db, "is_user_admin", user.uid);
+        const adminDocSnap = await getDoc(adminDocRef);
+
+        if (adminDocSnap.exists() && adminDocSnap.data().isadmin === true) {
+          setIsAdmin(true); // Set the admin status
+        }
+        
       } else {
         setUser(null);
+        setIsAdmin(false);
       }
     });
 
@@ -24,10 +37,13 @@ const ProfilePage = () => {
   const fullName = user?.displayName;
   const firstName = fullName ? fullName.split(" ")[0] : null;
 
-  const handleSignOut = () => {
+  const handleSignOut = () => { 
+    dispatch(clearCartData());
     auth
       .signOut()
       .then(() => {
+        localStorage.clear();
+
         navigate(`/`);
       })
       .catch((error) => {
@@ -60,10 +76,13 @@ const ProfilePage = () => {
         <Typography variant="h6">Your email: {user?.email}</Typography>
         <Typography variant="h6">Your wishlist</Typography>
         <Button onClick={handleSignOut}>Sign Out</Button>
+        {isAdmin && ( // Conditionally render the Admin Page button
+        <Button onClick={() => navigate("/adminPage")}>Admin Page</Button>
+      )}
+        
       </Grid>
     </Grid>
   );
-  
 };
 
 export default ProfilePage;

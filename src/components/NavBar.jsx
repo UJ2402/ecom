@@ -1,8 +1,8 @@
 import { UserContext } from "../App";
-import {Avatar} from "@mui/material";
+import { Avatar, Drawer, List, ListItem, ListItemText } from "@mui/material";
 import { useState } from "react";
 import { useContext } from "react";
-import { Storefront, Person, Help, ShoppingBag } from "@mui/icons-material";
+import { Person, Help, ShoppingBag } from "@mui/icons-material";
 import {
   AppBar,
   Toolbar,
@@ -13,7 +13,7 @@ import {
   Box,
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
-
+import MenuIcon from "@mui/icons-material/Menu";
 function NavBar() {
   const [searchValue, setSearchValue] = useState("");
   const user = useContext(UserContext);
@@ -28,12 +28,38 @@ function NavBar() {
     }
   };
 
+  const [open, setOpen] = useState(false);
+
+  const handleSidebar = () => {
+    setOpen(!open);
+  };
+
   return (
     <AppBar position="sticky">
       <Toolbar>
-        <IconButton size="large" edge="start" color="inherit" aria-label="logo">
-          <Storefront />
+        <IconButton
+          size="large"
+          edge="start"
+          color="inherit"
+          aria-label="logo"
+          onClick={handleSidebar}
+        >
+          <MenuIcon />
         </IconButton>
+        <Drawer anchor="left" open={open} onClose={handleSidebar}>
+          <List>
+            <ListItem button onClick={() => navigate(`/men`)}>
+              <ListItemText primary="Men" />
+            </ListItem>
+            <ListItem button onClick={() => navigate(`/women`)}>
+              <ListItemText primary="Women" />
+            </ListItem>
+            <ListItem button onClick={() => navigate(`/kids`)}>
+              <ListItemText primary="Kids" />
+            </ListItem>
+            {/* Add more items as needed */}
+          </List>
+        </Drawer>
         <Typography
           variant="h6"
           component="div"
@@ -59,7 +85,11 @@ function NavBar() {
         </Box>
         <Stack direction="row" spacing={2}>
           {user ? (
-            <Avatar sx={{cursor:"pointer"}} onClick={() => navigate(`/profilePage`)} src={user.photoURL}  />
+            <Avatar
+              sx={{ cursor: "pointer" }}
+              onClick={() => navigate(`/profilePage`)}
+              src={user.photoURL}
+            />
           ) : (
             <IconButton onClick={() => navigate(`/loginPage`)}>
               <Person />?

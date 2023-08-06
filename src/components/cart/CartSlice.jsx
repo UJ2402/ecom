@@ -32,10 +32,18 @@ export const cartSlice = createSlice({
     clearCart: (state) => {
       state.items = {};
     },
+    clearCartData: (state) => {
+      state.items ={};
+    },
+    setUserCart: (state, action) => {
+      state.items = action.payload;
+    }
   },
 });
 
-export const { additemtocart, clearCart, removeItemFromCart } =
+
+
+export const { additemtocart, clearCart, removeItemFromCart, clearCartData, setUserCart } =
   cartSlice.actions;
 
 export const selectCartItems = (state) => state.items;

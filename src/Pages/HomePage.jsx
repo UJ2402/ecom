@@ -1,5 +1,4 @@
 import Banner from "../components/Banner";
-import ProductGrid from "../components/ProductGrid";
 import { Grid } from "@mui/material";
 
 const HomePage = () => {
@@ -13,7 +12,7 @@ const HomePage = () => {
       >
         <Banner />
         <h1 style={{ alignItems: "left" }}>Our Bestsellers</h1>
-        <ProductGrid />
+        {/* <ProductGrid /> */}
       </Grid>
     </div>
   );

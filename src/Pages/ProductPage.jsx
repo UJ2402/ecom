@@ -4,7 +4,6 @@ import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { IconButton, Grid, Typography, Button } from "@mui/material";
-import { all_products } from "../assets/products.json";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -15,6 +14,8 @@ import { additemtocart } from "../components/cart/CartSlice";
 import { useDispatch } from "react-redux";
 import { UserContext } from "../App";
 import { useContext } from "react";
+import {doc, getDoc} from "firebase/firestore";
+import { db } from "../Firebase";
 const Img = styled("img")({
   margin: "auto",
   display: "block",
@@ -28,7 +29,18 @@ const ProductPage = () => {
   const [productInfo, setProductInfo] = useState({});
 
   useEffect(() => {
-    setProductInfo(all_products[params.productId]);
+    const fetchProduct = async () => {
+      const productRef = doc(db, "products", params.productId);
+      const productDoc = await getDoc(productRef);
+
+      if(productDoc.exists()) {
+        setProductInfo({ id: productDoc.id, ...productDoc.data() });
+      }
+      else {
+        console.log("No such product!");
+      }
+    };
+    fetchProduct();
   }, [params.productId]);
 
   const [quantity, setQuantity] = useState(1);
