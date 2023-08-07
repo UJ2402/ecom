@@ -173,6 +173,7 @@ const AdminPage = () => {
           <Grid item xs={2}>
             <TextField
               name="price"
+              type="number"
               label="₹"
               variant="outlined"
               fullWidth

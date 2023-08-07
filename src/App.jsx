@@ -18,6 +18,8 @@ import AdminPage from "./Pages/AdminPage";
 import MenProductPage from "./Pages/MenProductPage";
 import WomenProductPage from "./Pages/WomenProductPage";
 import KidsProductPage from "./Pages/KidsProductPage";
+import UpdatePricesPage from "./components/UpdatePricesPage";
+
 
 export const UserContext = createContext();
 
@@ -59,14 +61,14 @@ function App() {
         <BrowserRouter>
           <div
             style={{
-              width: "100vw",
+              width: "100%",
             }}
           >
             <Grid
               container
               spacing={2}
               justifyContent="center"
-              sx={{ width: "100" }}
+              sx={{ width: "100%" }}
             >
               <NavBar />
               <Routes>
@@ -83,6 +85,8 @@ function App() {
                 <Route path="/men" element={<MenProductPage />}></Route>
                 <Route path="/women" element={<WomenProductPage />}></Route>
                 <Route path="/kids" element={<KidsProductPage />}></Route>
+                <Route path="/admin/update-prices" element={<UpdatePricesPage />} />
+
               </Routes>
             </Grid>
             <Footer />

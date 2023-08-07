@@ -29,7 +29,7 @@ const MenProductPage = () => {
       container
       spacing={3}
       width="100%"
-      justifyContent="space-between"
+      
     >
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />

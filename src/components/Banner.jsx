@@ -9,6 +9,7 @@ function Banner() {
       showStatus={false}
       showThumbs={false}
       interval={5000}
+      width= "100%"
     >
       <div>
         <img loading="lazy" src="https://static.zara.net/photos///contents/mkt/spots/ss23-sale/subhome-xmedia-launch-man-north-south//SVG-landscape-fill-e4e8a93a-83ec-4b8a-a3f6-f2c83d527c13-en_GB@IN.svg?ts=1688934325804" alt="" />

@@ -1,6 +1,6 @@
 import { Button, Grid } from "@mui/material";
 import { useEffect } from "react";
-import { app, auth } from "../Firebase";
+import {  auth } from "../Firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useCallback, useContext } from "react";
 import ProfilePage from "./ProfilePage";

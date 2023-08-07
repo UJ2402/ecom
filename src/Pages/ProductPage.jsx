@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { IconButton, Grid, Typography, Button } from "@mui/material";
+import { IconButton, Grid, Typography, Button, Snackbar, Alert } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { styled } from "@mui/material/styles";
@@ -16,6 +16,7 @@ import { UserContext } from "../App";
 import { useContext } from "react";
 import {doc, getDoc} from "firebase/firestore";
 import { db } from "../Firebase";
+import { formatNumberWithCommas } from "../components/utils";
 const Img = styled("img")({
   margin: "auto",
   display: "block",
@@ -23,10 +24,13 @@ const Img = styled("img")({
   maxHeight: "100%",
 });
 
+
+
 const ProductPage = () => {
   const params = useParams();
   const dispatch = useDispatch();
   const [productInfo, setProductInfo] = useState({});
+  const [openSnackbar, setOpenSnackbar] = useState(false);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -50,7 +54,12 @@ const ProductPage = () => {
     }
   };
 
-  
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason === 'clickaway') {
+      return;
+    }
+    setOpenSnackbar(false);
+  };
 
   const user = useContext(UserContext);
 
@@ -62,6 +71,7 @@ const ProductPage = () => {
           count: quantity,
         })
       );
+      setOpenSnackbar(true);
 
     }
     else {
@@ -81,10 +91,12 @@ const ProductPage = () => {
     setSize(event.target.value);
   };
 
+  console.log('Price:', productInfo.price);
+console.log('Type of Price:', typeof productInfo.price);
   // console.log(size, quantity);
   return (
-    <Grid item my={10} container spacing={2}>
-      <Grid item lg={7}>
+    <Grid item my={10} container spacing={2} >
+      <Grid item lg={3} sx={{ml:12}}>
         <Img
           sx={{ borderRadius: 5 }}
           src={productInfo.image}
@@ -92,13 +104,22 @@ const ProductPage = () => {
         />
       </Grid>
 
-      <Grid item md={5} lg={5}>
+      <Snackbar open={openSnackbar}
+      autoHideDuration={6000}
+      onClose={handleCloseSnackbar}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
+        <Alert onClose={handleCloseSnackbar} severity="success" variant="filled" sx={{color: "white", bgcolor: "black"}}>
+          Product added!
+        </Alert>
+      </Snackbar>
+
+      <Grid item md={5} lg={5} sx={{ml:12}}>
         <Typography variant="h2">{productInfo.name}</Typography>
         <Typography my={3} variant="h5">
           {productInfo.description}
         </Typography>
         <Typography sx={{ fontWeight: "bold" }} my={2}>
-        ₹{productInfo.price}
+        ₹ {formatNumberWithCommas(productInfo.price)}
         </Typography>
         <Grid container columnSpacing={1}>
           <Grid item md={4}>
@@ -116,9 +137,10 @@ const ProductPage = () => {
                 <MenuItem value={"L"}>Large</MenuItem>
               </Select>
             </FormControl>
+            
           </Grid>
-          <Grid item container md={4}>
-            <Grid item container sx={{ p: 1, border: 1, borderRadius: 1 }}>
+          <Grid item container md={3}>
+            <Grid item container justifyContent="space-between"sx={{ p: 1, border: 1, borderRadius: 1 }}>
               <Grid item>
                 <IconButton onClick={handleDecrease}>
                   <RemoveIcon />

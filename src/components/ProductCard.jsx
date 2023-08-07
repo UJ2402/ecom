@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
+import { formatNumberWithCommas } from "../components/utils";
 import {
   Grid,
   CardMedia,
@@ -52,7 +53,7 @@ export const ProductCard = ({ product }) => {
           </Typography>
 
           <Typography variant="h6" color="primary">
-            ₹{parseFloat(product.price).toFixed(2)}
+            ₹ {formatNumberWithCommas(product.price)}
           </Typography>
         </CardContent>
       </Card>

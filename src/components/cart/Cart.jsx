@@ -14,6 +14,8 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
+import { formatNumberWithCommas } from "./../utils";
+
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -118,10 +120,10 @@ const Cart = () => {
                     <Typography variant="h6">Quantity: {count}</Typography>
                   </Grid>
                   <Typography variant="h6">
-                    Price: ₹{productInfo.price}
+                    Price: ₹{formatNumberWithCommas(productInfo.price)}
                   </Typography>
                   <Typography mt={12} variant="h6">
-                    Total Price: ₹{(productInfo.price * count).toFixed(2)}
+                    Total Price: ₹{formatNumberWithCommas(productInfo.price * count)}
                   </Typography>
                 </CardContent>
                 <IconButton
@@ -145,7 +147,7 @@ const Cart = () => {
           <Card sx={{ p: 2, marginRight: 5, borderRadius: 5 }}>
             <Typography variant="h5">Cart Summary</Typography>
             <Typography variant="h6">
-              Total Cart Price: ₹{cartTotal.toFixed(2)}
+              Total Cart Price: ₹{formatNumberWithCommas(cartTotal)}
             </Typography>
             <Button
               variant="contained"

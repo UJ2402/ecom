@@ -12,6 +12,7 @@ import {
   Input,
   Box,
 } from "@mui/material";
+import { useTheme } from '@mui/material/styles';
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
@@ -23,6 +24,13 @@ function NavBar() {
   const handleSearchInputChange = (event) => {
     setSearchValue(event.target.value);
   };
+ 
+ const theme=useTheme();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    setOpen(false);
+  }
 
   const handleSearchInputClick = () => {
     if (searchValue === "") {
@@ -41,7 +49,7 @@ function NavBar() {
   const totalItems = Object.values(cartItems). reduce((total, qty) => total + qty, 0);
 
   return (
-    <AppBar position="sticky">
+    <AppBar position="sticky" sx={{width : '100vw'}}>
       <Toolbar>
         <IconButton
           size="large"
@@ -49,18 +57,19 @@ function NavBar() {
           color="inherit"
           aria-label="logo"
           onClick={handleSidebar}
+          sx={{pl:3}}
         >
           <MenuIcon />
         </IconButton>
         <Drawer anchor="left" open={open} onClose={handleSidebar}>
           <List>
-            <ListItem button onClick={() => navigate(`/men`)}>
+            <ListItem button onClick={() => handleNavigate(`/men`)}>
               <ListItemText primary="Men" />
             </ListItem>
-            <ListItem button onClick={() => navigate(`/women`)}>
+            <ListItem button onClick={() => handleNavigate(`/women`)}>
               <ListItemText primary="Women" />
             </ListItem>
-            <ListItem button onClick={() => navigate(`/kids`)}>
+            <ListItem button onClick={() => handleNavigate(`/kids`)}>
               <ListItemText primary="Kids" />
             </ListItem>
             {/* Add more items as needed */}
@@ -79,14 +88,19 @@ function NavBar() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
+            maxWidth: '200px',
           }}
         >
           <Input
             type="search"
+            color="secondary"
+            
             id="search-input"
             value={searchValue}
             onChange={handleSearchInputChange}
             onClick={handleSearchInputClick}
+            inputProps={{ style: { color: theme.palette.secondary.main } }}
+            
           />
         </Box>
         <Stack direction="row" spacing={2}>
@@ -97,18 +111,19 @@ function NavBar() {
               src={user.photoURL}
             />
           ) : (
-            <IconButton onClick={() => navigate(`/loginPage`)}>
-              <Person />?
+            <IconButton onClick={() => navigate(`/loginPage`)} color="secondary">
+              <Badge badgeContent="?" color="error"></Badge>
+              <Person />
             </IconButton>
           )}
-          <IconButton onClick={() => navigate(`/cart`)}>
+          <IconButton onClick={() => navigate(`/cart`)} color="secondary">
             <Badge badgeContent={totalItems} color="error">
             <ShoppingBag />
             </Badge>
             
             
           </IconButton>
-          <IconButton>
+          <IconButton color="secondary">
             <Help />
           </IconButton>
         </Stack>
