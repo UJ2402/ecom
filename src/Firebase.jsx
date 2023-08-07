@@ -5,6 +5,7 @@ import {
   doc,
   setDoc,
   getDoc,
+  deleteDoc
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -38,3 +39,19 @@ export const getCart = async (userId) => {
     console.log(error);
   }
 };
+
+export const addToWishlist = async (userId, product) => {
+  const productRef = doc(db, "user_cart_data", userId, "wishlist", product.id);
+  await setDoc(productRef, product);
+}
+
+export const removeFromWishlist = async (userId, productId) => {
+  const productRef = doc(db, "user_cart_dat", userId, "wishlist", productId);
+  await deleteDoc(productRef);
+}
+
+export const isProductInWishlist = async (userId, productId) => {
+  const productRef = doc(db, "user_cart_data", userId, "wishlist", productId);
+  const docSnapshot = await getDoc(productRef);
+  return docSnapshot.exists();
+}

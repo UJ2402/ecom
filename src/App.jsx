@@ -19,7 +19,7 @@ import MenProductPage from "./Pages/MenProductPage";
 import WomenProductPage from "./Pages/WomenProductPage";
 import KidsProductPage from "./Pages/KidsProductPage";
 import UpdatePricesPage from "./components/UpdatePricesPage";
-
+import Wishlist from "./Pages/Wishlist";
 
 export const UserContext = createContext();
 
@@ -86,7 +86,9 @@ function App() {
                 <Route path="/women" element={<WomenProductPage />}></Route>
                 <Route path="/kids" element={<KidsProductPage />}></Route>
                 <Route path="/admin/update-prices" element={<UpdatePricesPage />} />
+                <Route path="/profilePage/wishlist" element={<Wishlist />} />
 
+                
               </Routes>
             </Grid>
             <Footer />

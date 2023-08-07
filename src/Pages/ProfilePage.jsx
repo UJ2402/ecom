@@ -74,7 +74,7 @@ const ProfilePage = () => {
         sx={{ my: 4, textAlign: "center" }}
       >
         <Typography variant="h6">Your email: {user?.email}</Typography>
-        <Typography variant="h6">Your wishlist</Typography>
+        <Button onClick={() => navigate("/profilePage/wishlist")}>Wishlist</Button>
         <Button onClick={handleSignOut}>Sign Out</Button>
         {isAdmin && ( // Conditionally render the Admin Page button
         <Button onClick={() => navigate("/adminPage")}>Admin Page</Button>

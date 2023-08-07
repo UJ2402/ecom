@@ -8,9 +8,20 @@ import {
   CardContent,
   Card,
   Skeleton,
+  IconButton,
 } from "@mui/material";
-import { useState } from "react";
-export const ProductCard = ({ product }) => {
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from "@mui/icons-material/Favorite";
+import { useContext, useEffect, useState } from "react";
+import { UserContext } from "../App";
+import {
+  addToWishlist,
+  removeFromWishlist,
+  isProductInWishlist,
+} from "../Firebase";
+export const ProductCard = ({ product, initialInWishlist = false  }) => {
+  const [isInWishlist, setIsInWishlist] = useState(initialInWishlist);
+
   const navigate = useNavigate();
   const [imgLoaded, setImgLoaded] = useState(false);
   ProductCard.propTypes = {
@@ -21,6 +32,35 @@ export const ProductCard = ({ product }) => {
       price: PropTypes.number,
       image: PropTypes.string,
     }).isRequired,
+    initialInWishlist: PropTypes.bool,
+  };
+
+  const user = useContext(UserContext);
+
+  useEffect(() => {
+    const checkWishlistStatus = async () => {
+      if (user && user.id) {
+        const inWishlist = await isProductInWishlist(user.id, product.id);
+        setIsInWishlist(inWishlist);
+      }
+    };
+    checkWishlistStatus();
+  }, [product, user]);
+
+  const handleWishlistToggle = async (event) => {
+    event.stopPropagation();
+    if (user && user.uid) {
+      if (isInWishlist) {
+        await removeFromWishlist(user.uid, product.id);
+        setIsInWishlist(false);
+      } else {
+        await addToWishlist(user.uid, product);
+        setIsInWishlist(true);
+      }
+    } else {
+      console.log(user, user.uid);
+      alert("login karlo");
+    }
   };
   return (
     <Grid item xs={12} sm={6} md={4} lg={2} key={product.id}>
@@ -52,12 +92,25 @@ export const ProductCard = ({ product }) => {
             {product.name}
           </Typography>
 
-          <Typography variant="h6" color="primary">
-            ₹ {formatNumberWithCommas(product.price)}
-          </Typography>
+          <Grid
+            container
+            direction="row"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography variant="h6" color="primary">
+              ₹ {formatNumberWithCommas(product.price)}
+            </Typography>
+            <IconButton onClick={handleWishlistToggle}>
+              {isInWishlist ? (
+                <FavoriteIcon sx={{color: "#FF0000"}} />
+              ) : (
+                <FavoriteBorderIcon />
+              )}
+            </IconButton>
+          </Grid>
         </CardContent>
       </Card>
     </Grid>
   );
 };
-
