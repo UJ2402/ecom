@@ -30,7 +30,6 @@ const MenProductPage = () => {
       spacing={3}
       width="100%"
       justifyContent="space-between"
-      sx={{ cursor: "pointer" }}
     >
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />

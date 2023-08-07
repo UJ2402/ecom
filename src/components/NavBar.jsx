@@ -1,5 +1,5 @@
 import { UserContext } from "../App";
-import { Avatar, Drawer, List, ListItem, ListItemText } from "@mui/material";
+import { Avatar, Badge, Drawer, List, ListItem, ListItemText } from "@mui/material";
 import { useState } from "react";
 import { useContext } from "react";
 import { Person, Help, ShoppingBag } from "@mui/icons-material";
@@ -14,6 +14,8 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
+import { useSelector } from "react-redux";
+import { selectCartItems } from "./cart/CartSlice";
 function NavBar() {
   const [searchValue, setSearchValue] = useState("");
   const user = useContext(UserContext);
@@ -33,6 +35,10 @@ function NavBar() {
   const handleSidebar = () => {
     setOpen(!open);
   };
+
+  const cartItems = useSelector(selectCartItems);
+
+  const totalItems = Object.values(cartItems). reduce((total, qty) => total + qty, 0);
 
   return (
     <AppBar position="sticky">
@@ -96,7 +102,11 @@ function NavBar() {
             </IconButton>
           )}
           <IconButton onClick={() => navigate(`/cart`)}>
+            <Badge badgeContent={totalItems} color="error">
             <ShoppingBag />
+            </Badge>
+            
+            
           </IconButton>
           <IconButton>
             <Help />

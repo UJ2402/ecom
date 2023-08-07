@@ -1,5 +1,5 @@
-import Box from "@mui/material/Box";
 import InputLabel from "@mui/material/InputLabel";
+import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
@@ -98,7 +98,7 @@ const ProductPage = () => {
           {productInfo.description}
         </Typography>
         <Typography sx={{ fontWeight: "bold" }} my={2}>
-          ${productInfo.price}
+        ₹{productInfo.price}
         </Typography>
         <Grid container columnSpacing={1}>
           <Grid item md={4}>

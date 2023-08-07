@@ -14,7 +14,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { updateCartInFirestore } from "../../Firebase";
@@ -134,7 +134,7 @@ const Cart = () => {
                 </IconButton>
               </Card>
             ) : (
-              <></>
+              <React.Fragment key={key}></React.Fragment>
             );
           })}
         </Grid>

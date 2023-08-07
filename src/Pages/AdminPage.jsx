@@ -7,7 +7,12 @@ import {
   Select,
   MenuItem,
   Button,
+  Snackbar,
+  IconButton,
+  Alert,
 } from "@mui/material";
+// import RefreshIcon from '@mui/icons-material/Refresh';
+import CloseIcon from "@mui/icons-material/Close";
 import { useState } from "react";
 import { db } from "../Firebase";
 import { addDoc, collection } from "firebase/firestore";
@@ -29,15 +34,29 @@ const AdminPage = () => {
     sizes: [],
   });
 
+  const [imageURL, setImageURL] = useState(null);
+
+  const handleCloseSnackbar = (event, reason) => {
+    if (reason == "clickaway") {
+      return;
+    }
+    setOpenSnackbar(false);
+    setOpenErrorSnackbar(false);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setProduct({ ...product, [name]: value });
   };
 
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
   const [imageFile, setImageFile] = useState(null);
 
   const handleImageChange = (e) => {
     setImageFile(e.target.files[0]);
+    console.log(URL); 
+    setImageURL(URL.createObjectURL(e.target.files[0]));
   };
 
   const handleSubmit = async (e) => {
@@ -52,7 +71,7 @@ const AdminPage = () => {
       !product.category ||
       !product.sizes.length
     ) {
-      alert("All fields must be filled out!");
+      setOpenErrorSnackbar(true);
       return; // Return early to prevent submission
     }
 
@@ -78,7 +97,7 @@ const AdminPage = () => {
             image: imageURL,
             sizes: product.sizes.split(","),
           });
-          alert("product added successfully");
+          setOpenSnackbar(true);
           // clear form
           setProduct({
             name: "",
@@ -107,6 +126,36 @@ const AdminPage = () => {
       justifyContent="center"
       alignItems="center"
     >
+      <Snackbar
+        open={openErrorSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert onClose={handleCloseSnackbar} severity="error">
+          All fields must be filled out!
+        </Alert>
+      </Snackbar>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={6000}
+        onClose={handleCloseSnackbar}
+      >
+        <Alert
+          onClose={handleCloseSnackbar}
+          severity="success"
+          action={
+            <IconButton
+              size="small"
+              color="inherit"
+              onClick={handleCloseSnackbar}
+            >
+              <CloseIcon fontSize="small" />
+            </IconButton>
+          }
+        >
+          Product added successfully
+        </Alert>
+      </Snackbar>
       <Typography variant="h3"> Manage products </Typography>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} sx={{ py: 2, maxWidth: 1000 }}>
@@ -192,7 +241,42 @@ const AdminPage = () => {
           </Grid>
 
           <Grid item xs={6}>
-            <input type="file" accept="image/*" onChange={handleImageChange} />
+            {imageFile ? (
+              <>
+                <img
+                  src={imageURL}
+                  alt="preview"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "15px", // set the radius for rounded corners
+                  }}
+                />
+                <IconButton
+                  variant="contained"
+                  component="label"
+                  style={{ marginTop: 10 }}
+                >
+                  Re-upload Image
+                  <input
+                    type="file"
+                    accept="image/*"
+                    hidden
+                    onChange={handleImageChange}
+                  />
+                </IconButton>
+              </>
+            ) : (
+              <Button variant="contained" component="label">
+                Upload Image
+                <input
+                  type="file"
+                  accept="image/*"
+                  hidden
+                  onChange={handleImageChange}
+                />
+              </Button>
+            )}
           </Grid>
         </Grid>
 

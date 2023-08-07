@@ -13,7 +13,6 @@ export const calculateCartTotal = (items, all_products) => {
   return total;
 };
 
-
 export const cartSlice = createSlice({
   name: "cart",
   initialState: {
@@ -27,24 +26,27 @@ export const cartSlice = createSlice({
           : 0) + action.payload.count;
     },
     removeItemFromCart: (state, action) => {
-      state.items[action.payload] = 0;
+      delete state.items[action.payload];
     },
     clearCart: (state) => {
       state.items = {};
     },
     clearCartData: (state) => {
-      state.items ={};
+      state.items = {};
     },
     setUserCart: (state, action) => {
       state.items = action.payload;
-    }
+    },
   },
 });
 
-
-
-export const { additemtocart, clearCart, removeItemFromCart, clearCartData, setUserCart } =
-  cartSlice.actions;
+export const {
+  additemtocart,
+  clearCart,
+  removeItemFromCart,
+  clearCartData,
+  setUserCart,
+} = cartSlice.actions;
 
 export const selectCartItems = (state) => state.items;
 

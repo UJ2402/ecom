@@ -1,9 +1,17 @@
 import { useNavigate } from "react-router-dom";
-import PropTypes from 'prop-types';
-import { Grid, CardMedia, Typography, CardContent, Card } from "@mui/material";
-import AddToCartButton from "./AddToCartButton";
+import PropTypes from "prop-types";
+import {
+  Grid,
+  CardMedia,
+  Typography,
+  CardContent,
+  Card,
+  Skeleton,
+} from "@mui/material";
+import { useState } from "react";
 export const ProductCard = ({ product }) => {
   const navigate = useNavigate();
+  const [imgLoaded, setImgLoaded] = useState(false);
   ProductCard.propTypes = {
     product: PropTypes.shape({
       id: PropTypes.string,
@@ -15,17 +23,40 @@ export const ProductCard = ({ product }) => {
   };
   return (
     <Grid item xs={12} sm={6} md={4} lg={2} key={product.id}>
-      <Card onClick={() => navigate(`/productPage/${product.id}`)}>
-        <CardMedia component="img" image={product.image} alt={product.name} />
+      <Card
+        style={{ height: "100%", marginTop: "30px" }}
+        onClick={() => navigate(`/productPage/${product.id}`)}
+      >
+        {!imgLoaded && (
+          <Skeleton variant="rectangular" width="100%" height="79%" />
+        )}
+        <CardMedia
+          component="img"
+          image={product.image}
+          alt={product.name}
+          onLoad={() => setImgLoaded(true)}
+          style={{ display: imgLoaded ? "block" : "none" }}
+        />
         <CardContent>
-          <Typography variant="h6">{product.name}</Typography>
-          <Typography variant="body2">{product.description}</Typography>
+          <Typography
+            variant="h6"
+            sx={{
+              display: "-webkit-box",
+              height: "59px",
+              lineClamp: 2,
+              boxOrient: "vertical",
+              overflow: "hidden",
+            }}
+          >
+            {product.name}
+          </Typography>
+
           <Typography variant="h6" color="primary">
             ₹{parseFloat(product.price).toFixed(2)}
           </Typography>
-          <AddToCartButton />
         </CardContent>
       </Card>
     </Grid>
   );
 };
+
