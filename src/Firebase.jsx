@@ -46,7 +46,7 @@ export const addToWishlist = async (userId, product) => {
 }
 
 export const removeFromWishlist = async (userId, productId) => {
-  const productRef = doc(db, "user_cart_dat", userId, "wishlist", productId);
+  const productRef = doc(db, "user_cart_data", userId, "wishlist", productId);
   await deleteDoc(productRef);
 }
 

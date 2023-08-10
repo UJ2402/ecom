@@ -49,6 +49,8 @@ export const ProductCard = ({ product, initialInWishlist = false  }) => {
 
   const handleWishlistToggle = async (event) => {
     event.stopPropagation();
+    setIsInWishlist(prevState => !prevState);
+    try{
     if (user && user.uid) {
       if (isInWishlist) {
         await removeFromWishlist(user.uid, product.id);
@@ -60,6 +62,10 @@ export const ProductCard = ({ product, initialInWishlist = false  }) => {
     } else {
       console.log(user, user.uid);
       alert("login karlo");
+    }
+  } catch (error) {
+    console.log(error);
+    setIsInWishlist(prevState => !prevState);
     }
   };
   return (

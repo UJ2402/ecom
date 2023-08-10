@@ -15,9 +15,7 @@ import { setUserCart } from "./components/cart/CartSlice";
 import { getCart } from "./Firebase";
 import Footer from "./components/Footer";
 import AdminPage from "./Pages/AdminPage";
-import MenProductPage from "./Pages/MenProductPage";
-import WomenProductPage from "./Pages/WomenProductPage";
-import KidsProductPage from "./Pages/KidsProductPage";
+import MenProductPage from "./Pages/AllProductsPage";
 import UpdatePricesPage from "./components/UpdatePricesPage";
 import Wishlist from "./Pages/Wishlist";
 
@@ -82,9 +80,7 @@ function App() {
                 <Route path="/profilePage" element={<ProfilePage />}></Route>
                 <Route path="/cart" element={<Cart />}></Route>
                 <Route path="/adminPage" element={<AdminPage />}></Route>
-                <Route path="/men" element={<MenProductPage />}></Route>
-                <Route path="/women" element={<WomenProductPage />}></Route>
-                <Route path="/kids" element={<KidsProductPage />}></Route>
+                <Route path="/allProducts" element={<MenProductPage />}></Route>
                 <Route path="/admin/update-prices" element={<UpdatePricesPage />} />
                 <Route path="/profilePage/wishlist" element={<Wishlist />} />
 
