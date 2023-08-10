@@ -38,8 +38,6 @@ function NavBar() {
   const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-
-
   const handleSidebar = () => {
     setOpen(!open);
   };
@@ -50,10 +48,10 @@ function NavBar() {
     (total, qty) => total + qty,
     0
   );
-    
+
   const handleSearch = (searchValue) => {
-    if(searchValue.trim() !== ""){
-      navigate(`/allProducts?search=${searchValue}`);
+    if (searchValue.trim() !== "") {
+      navigate(`/allProducts?search=${searchValue}`, { replace :true});
     }
   };
 
@@ -102,6 +100,10 @@ function NavBar() {
             onChange={(e) => {
               setSearchValue(e.target.value);
               handleSearch(e.target.value);
+              if (!e.target.value.trim()) {
+                navigate('/', { replace: true });
+
+              } 
             }}
             placeholder="search..."
             fullWidth

@@ -9,6 +9,8 @@ import {
   Card,
   Skeleton,
   IconButton,
+  Snackbar,
+  Alert,
 } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import FavoriteIcon from "@mui/icons-material/Favorite";
@@ -19,8 +21,12 @@ import {
   removeFromWishlist,
   isProductInWishlist,
 } from "../Firebase";
-export const ProductCard = ({ product, initialInWishlist = false  }) => {
+import { useTheme } from "@emotion/react";
+export const ProductCard = ({ product, initialInWishlist = false }) => {
   const [isInWishlist, setIsInWishlist] = useState(initialInWishlist);
+  const [snackbarOpen, setSnackbarOpen] = useState(false);
+  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const theme = useTheme();
 
   const navigate = useNavigate();
   const [imgLoaded, setImgLoaded] = useState(false);
@@ -49,29 +55,43 @@ export const ProductCard = ({ product, initialInWishlist = false  }) => {
 
   const handleWishlistToggle = async (event) => {
     event.stopPropagation();
-    setIsInWishlist(prevState => !prevState);
-    try{
-    if (user && user.uid) {
-      if (isInWishlist) {
-        await removeFromWishlist(user.uid, product.id);
-        setIsInWishlist(false);
+    setIsInWishlist((prevState) => !prevState);
+    try {
+      if (user && user.uid) {
+        if (isInWishlist) {
+          await removeFromWishlist(user.uid, product.id);
+          setIsInWishlist(false);
+          setSnackbarMessage("Removed from wishlist");
+        } else {
+          await addToWishlist(user.uid, product);
+          setIsInWishlist(true);
+          setSnackbarMessage("Added to wishlist");
+        }
+        setSnackbarOpen(true);
       } else {
-        await addToWishlist(user.uid, product);
-        setIsInWishlist(true);
+        console.log(user, user.uid);
+        alert("login karlo");
       }
-    } else {
-      console.log(user, user.uid);
-      alert("login karlo");
-    }
-  } catch (error) {
-    console.log(error);
-    setIsInWishlist(prevState => !prevState);
+    } catch (error) {
+      console.log(error);
+      setIsInWishlist((prevState) => !prevState);
+      setSnackbarOpen(true);
     }
   };
   return (
     <Grid item xs={12} sm={6} md={4} lg={2} key={product.id}>
+
+      <Snackbar open={snackbarOpen} 
+      autoHideDuration={3000}
+      onClose={() => setSnackbarOpen(false)} 
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
+        <Alert onClose={() => setSnackbarOpen(false)} severity="success" variant="filled" sx={{width: '100%', color: theme.palette.secondary.main, backgroundColor: theme.palette.primary.main}}>
+          {snackbarMessage}
+        </Alert>
+      </Snackbar>
+
       <Card
-        style={{ height: "100%", marginTop: "30px" }}
+        style={{ height: "94%", marginTop: "30px" }}
         onClick={() => navigate(`/productPage/${product.id}`)}
       >
         {!imgLoaded && (
@@ -93,6 +113,7 @@ export const ProductCard = ({ product, initialInWishlist = false  }) => {
               lineClamp: 2,
               boxOrient: "vertical",
               overflow: "hidden",
+              lineHeight: "1.3",
             }}
           >
             {product.name}
@@ -109,7 +130,7 @@ export const ProductCard = ({ product, initialInWishlist = false  }) => {
             </Typography>
             <IconButton onClick={handleWishlistToggle}>
               {isInWishlist ? (
-                <FavoriteIcon sx={{color: "#FF0000"}} />
+                <FavoriteIcon sx={{ color: "#FF0000" }} />
               ) : (
                 <FavoriteBorderIcon />
               )}

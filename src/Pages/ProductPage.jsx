@@ -6,7 +6,7 @@ import Select from "@mui/material/Select";
 import { IconButton, Grid, Typography, Button, Snackbar, Alert } from "@mui/material";
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { styled } from "@mui/material/styles";
+import { styled, useTheme } from "@mui/material/styles";
 import * as React from "react";
 import AddIcon from "@mui/icons-material/Add";
 import RemoveIcon from "@mui/icons-material/Remove";
@@ -31,6 +31,7 @@ const ProductPage = () => {
   const dispatch = useDispatch();
   const [productInfo, setProductInfo] = useState({});
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const theme = useTheme();
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -108,7 +109,7 @@ console.log('Type of Price:', typeof productInfo.price);
       autoHideDuration={6000}
       onClose={handleCloseSnackbar}
       anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}>
-        <Alert onClose={handleCloseSnackbar} severity="success" variant="filled" sx={{color: "white", bgcolor: "black"}}>
+        <Alert onClose={handleCloseSnackbar} severity="success" variant="filled" sx={{color: theme.palette.secondary.main, bgcolor: theme.palette.primary.main}}>
           Product added!
         </Alert>
       </Snackbar>
