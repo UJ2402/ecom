@@ -1,13 +1,18 @@
 import { CircularProgress, Grid } from "@mui/material";
-// import ProductGrid from "../components/ProductGrid"
 import { useCallback, useContext, useEffect, useState } from "react";
-import { collection, getDocs, query, where } from "firebase/firestore";
+import { collection, getDocs } from "firebase/firestore";
+import { useSearchParams } from "react-router-dom";
 import { db } from "../Firebase";
 import { ProductCard } from "../components/ProductCard";
 import { UserContext } from "../App";
+import ProductsContext from "../components/ProductsContext";
+
 const AllProductsPage = () => {
-  const [products, setProducts] = useState([]);
+  const allProducts = useContext(ProductsContext);
   const user = useContext(UserContext);
+  const [searchParams] = useSearchParams();
+  const searchQuery = searchParams.get("search");
+  const [userWishlist, setUserWishlist] = useState([]);
 
   const fetchUserWishlist = useCallback(async () => {
     if (!user || !user.uid) return [];
@@ -18,36 +23,33 @@ const AllProductsPage = () => {
     querySnapshot.forEach((doc) => {
       wishlistItems.push(doc.id);
     });
-    return wishlistItems;
+    setUserWishlist(wishlistItems);
   }, [user]);
 
   useEffect(() => {
-    if (!user || !user.uid) return;
-    const fetchAllProducts = async () => {
-      const userWishlist = await fetchUserWishlist();
-      const productsRef = collection(db, "products"); //ref to products
-      const productsSnapshot = await getDocs(productsRef); // get snapshot of that query
-      const productList = productsSnapshot.docs.map((doc) => ({
-        //maps doc of productsSnapshot and creating obj for each doc with doc id and data
-        id: doc.id,
-        ...doc.data(),
-        initialInWishlist: userWishlist.includes(doc.id)
-      }));
-      setProducts(productList);
-      };
-    if(user && user.uid){
-    fetchAllProducts();
+    if (user && user.uid) {
+      fetchUserWishlist();
     }
-  }, [user, fetchUserWishlist, setProducts]);
+  }, [user, fetchUserWishlist]);
 
-  if(!products.length){
-    return <CircularProgress/>
+  const displayedProducts = searchQuery
+    ? allProducts.filter((product) =>
+        product.name.toLowerCase().includes(searchQuery.toLowerCase())
+      )
+    : allProducts;
+
+  if (!displayedProducts.length) {
+    return <CircularProgress />;
   }
 
   return (
     <Grid item container spacing={3} width="100%">
-      {products.map((product) => (
-        <ProductCard key={product.id} product={product} initialInWishlist={product.initialInWishlist}/>
+      {displayedProducts.map((product) => (
+        <ProductCard
+          key={product.id}
+          product={product}
+          initialInWishlist={userWishlist.includes(product.id)}
+        />
       ))}
     </Grid>
   );

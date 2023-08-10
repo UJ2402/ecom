@@ -18,6 +18,9 @@ import AdminPage from "./Pages/AdminPage";
 import MenProductPage from "./Pages/AllProductsPage";
 import UpdatePricesPage from "./components/UpdatePricesPage";
 import Wishlist from "./Pages/Wishlist";
+import { ProductsContext } from "./components/ProductsContext.jsx";
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "./Firebase";
 
 export const UserContext = createContext();
 
@@ -36,6 +39,7 @@ const theme = createTheme({
 function App() {
   const [user, setUser] = useState();
   const dispatch = useDispatch();
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -51,45 +55,63 @@ function App() {
       }
     });
 
+    const fetchAllProducts = async () => {
+      const productsRef = collection(db, "products");
+      const productsSnapshot = await getDocs(productsRef);
+      const productList = productsSnapshot.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+      setProducts(productList);
+    };
+
+    fetchAllProducts();
+
     return () => unsubscribe();
   }, [dispatch]);
   return (
     <ThemeProvider theme={theme}>
       <UserContext.Provider value={user}>
-        <BrowserRouter>
-          <div
-            style={{
-              width: "100%",
-            }}
-          >
-            <Grid
-              container
-              spacing={2}
-              justifyContent="center"
-              sx={{ width: "100%" }}
+        <ProductsContext.Provider value={products}>
+          <BrowserRouter>
+            <div
+              style={{
+                width: "100%",
+              }}
             >
-              <NavBar />
-              <Routes>
-                <Route path="/" element={<HomePage />}></Route>
-                <Route
-                  path="/productPage/:productId"
-                  element={<ProductPage />}
-                ></Route>
-                <Route path="/loginPage" element={<LoginPage />}></Route>
-                {/* <Route path="/allProducts" element={<ProductGrid />}></Route> */}
-                <Route path="/profilePage" element={<ProfilePage />}></Route>
-                <Route path="/cart" element={<Cart />}></Route>
-                <Route path="/adminPage" element={<AdminPage />}></Route>
-                <Route path="/allProducts" element={<MenProductPage />}></Route>
-                <Route path="/admin/update-prices" element={<UpdatePricesPage />} />
-                <Route path="/profilePage/wishlist" element={<Wishlist />} />
-
-                
-              </Routes>
-            </Grid>
-            <Footer />
-          </div>
-        </BrowserRouter>
+              <Grid
+                container
+                spacing={2}
+                justifyContent="center"
+                sx={{ width: "100%" }}
+              >
+                <NavBar />
+                <Routes>
+                  <Route path="/" element={<HomePage />}></Route>
+                  <Route
+                    path="/productPage/:productId"
+                    element={<ProductPage />}
+                  ></Route>
+                  <Route path="/loginPage" element={<LoginPage />}></Route>
+                  {/* <Route path="/allProducts" element={<ProductGrid />}></Route> */}
+                  <Route path="/profilePage" element={<ProfilePage />}></Route>
+                  <Route path="/cart" element={<Cart />}></Route>
+                  <Route path="/adminPage" element={<AdminPage />}></Route>
+                  <Route
+                    path="/allProducts"
+                    element={<MenProductPage />}
+                  ></Route>
+                  <Route
+                    path="/admin/update-prices"
+                    element={<UpdatePricesPage />}
+                  />
+                  <Route path="/profilePage/wishlist" element={<Wishlist />} />
+                </Routes>
+              </Grid>
+              <Footer />
+            </div>
+          </BrowserRouter>
+        </ProductsContext.Provider>
       </UserContext.Provider>
     </ThemeProvider>
   );

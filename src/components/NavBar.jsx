@@ -9,7 +9,7 @@ import {
   ListItemText,
   TextField,
 } from "@mui/material";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useContext } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Person, Help, ShoppingBag } from "@mui/icons-material";
@@ -26,45 +26,19 @@ import { useNavigate } from "react-router-dom";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
 import { selectCartItems } from "./cart/CartSlice";
-import { collection, getDocs, query, where } from "firebase/firestore";
-import { db } from "../Firebase";
-import { ProductCard } from "./ProductCard";
 function NavBar() {
-  const [searchValue, setSearchValue] = useState("");
-  const [searchResults, setSearchResults] = useState([]);
   const user = useContext(UserContext);
   const navigate = useNavigate();
   const theme = useTheme();
-
-  useEffect(() => {
-    if (searchValue !== "") {
-      const fetchMatchingProducts = async () => {
-        const productsRef = collection(db, "products");
-        const matchingQuery = query(
-          productsRef,
-          where("name", ">=", searchValue),
-          where("name", "<=", searchValue + "\uf8ff")
-        );
-        const snapshot = await getDocs(matchingQuery);
-        const matchingProducts = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setSearchResults(matchingProducts);
-      };
-
-      fetchMatchingProducts();
-    } else {
-      setSearchResults([]);
-    }
-  }, [searchValue]);
-
   const handleNavigate = (path) => {
     navigate(path);
     setOpen(false);
   };
 
   const [open, setOpen] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+
+
 
   const handleSidebar = () => {
     setOpen(!open);
@@ -76,6 +50,12 @@ function NavBar() {
     (total, qty) => total + qty,
     0
   );
+    
+  const handleSearch = (searchValue) => {
+    if(searchValue.trim() !== ""){
+      navigate(`/allProducts?search=${searchValue}`);
+    }
+  };
 
   return (
     <AppBar position="sticky" sx={{ width: "100vw" }}>
@@ -119,7 +99,10 @@ function NavBar() {
             type="search"
             id="search-input"
             value={searchValue}
-            onChange={(e) => setSearchValue(e.target.value)}
+            onChange={(e) => {
+              setSearchValue(e.target.value);
+              handleSearch(e.target.value);
+            }}
             placeholder="search..."
             fullWidth
             style={{
@@ -138,24 +121,6 @@ function NavBar() {
               ),
             }}
           />
-          <Box
-            sx={{
-              position: "fixed",
-              marginTop: "112",
-              zIndex: 10,
-              width: "1000px",
-              maxHeight: "300px",
-              overflowY: "auto",
-            }}
-          >
-            {searchResults.map((product) => (
-              <ProductCard
-                key={product.id}
-                product={product}
-                onClick={() => navigate(`/productPage/${product.id}`)}
-              />
-            ))}
-          </Box>
         </Box>
         <Stack direction="row" spacing={2}>
           {user ? (
