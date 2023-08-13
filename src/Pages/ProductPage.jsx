@@ -1,6 +1,8 @@
 import InputLabel from "@mui/material/InputLabel";
 import Box from "@mui/material/Box";
 import MenuItem from "@mui/material/MenuItem";
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore";
+import NavigateNextIcon from "@mui/icons-material/NavigateNext";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
 import { IconButton, Grid, Typography, Button, Snackbar, Alert } from "@mui/material";
@@ -31,6 +33,7 @@ const ProductPage = () => {
   const dispatch = useDispatch();
   const [productInfo, setProductInfo] = useState({});
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const theme = useTheme();
 
   useEffect(() => {
@@ -48,6 +51,17 @@ const ProductPage = () => {
     fetchProduct();
   }, [params.productId]);
 
+  const goToPreviousImage = () => {
+    if(currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
+  };
+
+  const goToNextImage = () => {
+    if(currentImageIndex < productInfo.images.length - 1){
+      setCurrentImageIndex(currentImageIndex + 1);
+    }
+  }
   const [quantity, setQuantity] = useState(1);
   const handleDecrease = () => {
     if (quantity > 1) {
@@ -98,11 +112,23 @@ console.log('Type of Price:', typeof productInfo.price);
   return (
     <Grid item my={10} container spacing={2} >
       <Grid item lg={3} sx={{ml:12}}>
-        <Img
+        {productInfo.images && productInfo.images.length > 0 && (
+          <>
+             <Img
           sx={{ borderRadius: 5 }}
-          src={productInfo.image}
-          alt={productInfo.name}
+          src={productInfo.images[currentImageIndex]}
+          alt={`${productInfo.name} - ${currentImageIndex + 1}`}
         />
+
+<IconButton disabled={currentImageIndex === 0} onClick={goToPreviousImage}>
+              <NavigateBeforeIcon /> {/* You'll need to import this */}
+            </IconButton>
+            <IconButton disabled={currentImageIndex === productInfo.images.length - 1} onClick={goToNextImage}>
+              <NavigateNextIcon /> {/* You'll need to import this */}
+            </IconButton>
+          </>
+        )}
+       
       </Grid>
 
       <Snackbar open={openSnackbar}

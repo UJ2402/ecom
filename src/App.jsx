@@ -21,6 +21,7 @@ import Wishlist from "./Pages/Wishlist";
 import { ProductsContext } from "./components/ProductsContext.jsx";
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "./Firebase";
+// import MigrateImageField from "./components/MigrateImageField";
 
 export const UserContext = createContext();
 
@@ -97,6 +98,7 @@ function App() {
                   <Route path="/profilePage" element={<ProfilePage />}></Route>
                   <Route path="/cart" element={<Cart />}></Route>
                   <Route path="/adminPage" element={<AdminPage />}></Route>
+                  {/* <Route path="/migrate-image-field" element={<MigrateImageField />} /> */}
                   <Route
                     path="/allProducts"
                     element={<MenProductPage />}

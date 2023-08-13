@@ -36,7 +36,7 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
       name: PropTypes.string,
       description: PropTypes.string,
       price: PropTypes.number,
-      image: PropTypes.string,
+      images: PropTypes.arrayOf(PropTypes.string),
     }).isRequired,
     initialInWishlist: PropTypes.bool,
   };
@@ -52,6 +52,8 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
     };
     checkWishlistStatus();
   }, [product, user]);
+
+  const imageSrc = product.images && product.images.length ? product.images[0] : "";
 
   const handleWishlistToggle = async (event) => {
     event.stopPropagation();
@@ -80,12 +82,22 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
   };
   return (
     <Grid item xs={12} sm={6} md={4} lg={2} key={product.id}>
-
-      <Snackbar open={snackbarOpen} 
-      autoHideDuration={3000}
-      onClose={() => setSnackbarOpen(false)} 
-      anchorOrigin={{ vertical: 'bottom', horizontal: 'left'}} >
-        <Alert onClose={() => setSnackbarOpen(false)} severity="success" variant="filled" sx={{width: '100%', color: theme.palette.secondary.main, backgroundColor: theme.palette.primary.main}}>
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={3000}
+        onClose={() => setSnackbarOpen(false)}
+        anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
+      >
+        <Alert
+          onClose={() => setSnackbarOpen(false)}
+          severity="success"
+          variant="filled"
+          sx={{
+            width: "100%",
+            color: theme.palette.secondary.main,
+            backgroundColor: theme.palette.primary.main,
+          }}
+        >
           {snackbarMessage}
         </Alert>
       </Snackbar>
@@ -98,8 +110,9 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
           <Skeleton variant="rectangular" width="100%" height="79%" />
         )}
         <CardMedia
+        
           component="img"
-          image={product.image}
+          image={imageSrc}
           alt={product.name}
           onLoad={() => setImgLoaded(true)}
           style={{ display: imgLoaded ? "block" : "none" }}

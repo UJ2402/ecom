@@ -27,14 +27,15 @@ const AdminPage = () => {
   const [product, setProduct] = useState({
     name: "",
     description: "",
-    price: "",
-    image: "",
+    price: 0,
+    images: [],
     gender: "",
     category: "",
     sizes: [],
   });
 
-  const [imageURL, setImageURL] = useState(null);
+  const [imageURLs, setImageURLs] = useState([]);
+  const [imageFiles, setImageFiles] = useState([]);
 
   const handleCloseSnackbar = (event, reason) => {
     if (reason == "clickaway") {
@@ -46,17 +47,21 @@ const AdminPage = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProduct({ ...product, [name]: value });
+    if (name === "price") {
+      setProduct({ ...product, [name]: parseFloat(value) });
+    } else {
+      setProduct({ ...product, [name]: value });
+    }
   };
 
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
-  const [imageFile, setImageFile] = useState(null);
 
   const handleImageChange = (e) => {
-    setImageFile(e.target.files[0]);
-    console.log(URL); 
-    setImageURL(URL.createObjectURL(e.target.files[0]));
+    const selectedFiles = Array.from(e.target.files);
+    setImageFiles(selectedFiles);
+    const urls = [...e.target.files].map((file) => URL.createObjectURL(file));
+    setImageURLs(urls);
   };
 
   const handleSubmit = async (e) => {
@@ -66,7 +71,7 @@ const AdminPage = () => {
       !product.name ||
       !product.description ||
       !product.price ||
-      !imageFile ||
+      !imageFiles ||
       !product.gender ||
       !product.category ||
       !product.sizes.length
@@ -76,45 +81,37 @@ const AdminPage = () => {
     }
 
     const storage = getStorage();
-    const storageRef = ref(storage, `products/${imageFile.name}`); //get storage reference of products and create loaction as imagefile.name
+    const uploadedImageURLs = [];
+    for (let file of imageFiles) {
+      const storageRef = ref(storage, `products/${file.name}`);
+      await uploadBytesResumable(storageRef, file);
+      const imageURL = await getDownloadURL(storageRef);
+      uploadedImageURLs.push(imageURL);
+    }
 
-    const uploadTask = uploadBytesResumable(storageRef, imageFile); //upload image
-
-    uploadTask.on(
-      "state_changed",
-      null,
-      (error) => {
-        console.log(error);
-        alert("Failed to upload image");
-      },
-      async () => {
-        const imageURL = await getDownloadURL(storageRef);
-
-        try {
-          const productsRef = collection(db, "products");
-          await addDoc(productsRef, {
-            ...product,
-            image: imageURL,
-            sizes: product.sizes.split(","),
-          });
-          setOpenSnackbar(true);
-          // clear form
-          setProduct({
-            name: "",
-            description: "",
-            price: "",
-            image: "",
-            gender: "",
-            category: "",
-            sizes: "",
-          });
-          setImageFile(null);
-        } catch (error) {
-          alert("oh no!");
-          console.log(error);
-        }
-      }
-    );
+    try {
+      const productsRef = collection(db, "products");
+      await addDoc(productsRef, {
+        ...product,
+        images: uploadedImageURLs,
+        sizes: product.sizes.split(","),
+      });
+      setOpenSnackbar(true);
+      // clear form
+      setProduct({
+        name: "",
+        description: "",
+        price: 0,
+        gender: "",
+        category: "",
+        sizes: "",
+      });
+      setImageFiles([]);
+      setImageURLs([]);
+    } catch (error) {
+      alert("oh no!");
+      console.log(error);
+    }
   };
 
   return (
@@ -242,36 +239,51 @@ const AdminPage = () => {
           </Grid>
 
           <Grid item xs={6}>
-            {imageFile ? (
+            {imageFiles.length > 0 ? (
               <>
-                <img
-                  src={imageURL}
-                  alt="preview"
-                  style={{
-                    width: "100%",
-                    height: "auto",
-                    borderRadius: "15px", // set the radius for rounded corners
-                  }}
-                />
-                <IconButton
-                  variant="contained"
-                  component="label"
-                  style={{ marginTop: 10 }}
-                >
-                  Re-upload Image
+                {imageURLs.map((url, index) => (
+                  <div key={index}>
+                    <img
+                      src={url}
+                      alt="preview"
+                      style={{
+                        width: "100%",
+                        height: "auto",
+                        borderRadius: "15px",
+                      }}
+                    />
+                    <IconButton
+                      onClick={() => {
+                        const newImageFiles = [...imageFiles];
+                        newImageFiles.splice(index, 1);
+                        setImageFiles(newImageFiles);
+
+                        const newImageURLs = [...imageURLs];
+                        newImageURLs.splice(index, 1);
+                        setImageURLs(newImageURLs);
+                      }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </div>
+                ))}
+                <Button variant="contained" component="label">
+                  Add More Images
                   <input
                     type="file"
+                    multiple
                     accept="image/*"
                     hidden
                     onChange={handleImageChange}
                   />
-                </IconButton>
+                </Button>
               </>
             ) : (
               <Button variant="contained" component="label">
-                Upload Image
+                Upload Images
                 <input
                   type="file"
+                  multiple
                   accept="image/*"
                   hidden
                   onChange={handleImageChange}
