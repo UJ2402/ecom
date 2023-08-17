@@ -11,10 +11,15 @@ import {
 import { db } from "../Firebase";
 import { doc, updateDoc } from "firebase/firestore";
 import ProductForm from "./ProductForm";
-import { getDownloadURL, getStorage, ref, uploadBytesResumable } from "firebase/storage";
+import {
+  getDownloadURL,
+  getStorage,
+  ref,
+  uploadBytesResumable,
+} from "firebase/storage";
 
 const EditProduct = () => {
-  const products = useContext(ProductsContext);
+  const { products } = useContext(ProductsContext);
   const [imageURLs, setImageURLs] = useState([]);
   const [imageFiles, setImageFiles] = useState([]);
 
@@ -30,14 +35,13 @@ const EditProduct = () => {
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
     const newImageURLs = selectedFiles.map((file) => URL.createObjectURL(file));
-  
+
     // Merge old imageFiles and new selectedFiles
     setImageFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
-  
+
     // Merge old imageURLs and newImageURLs
     setImageURLs((prevURLs) => [...prevURLs, ...newImageURLs]);
   };
-  
 
   const handleFormChange = (e) => {
     const { name, value } = e.target;
@@ -49,31 +53,36 @@ const EditProduct = () => {
   };
 
   const handleUpdate = async () => {
-  if (selectedProduct) {
-    // Upload new images to Firebase Storage and get their URLs
-    const storage = getStorage();
-    const newImageURLs = [];
-    for (let file of imageFiles) {
-      const storageRef = ref(storage, `products/${file.name}`);
-      await uploadBytesResumable(storageRef, file);
-      const imageURL = await getDownloadURL(storageRef);
-      newImageURLs.push(imageURL);
+    if (editableProduct.images.length === 0) {
+      alert("Please add at least one image.");
+      return;
     }
+    if (selectedProduct) {
+      // Upload new images to Firebase Storage and get their URLs
+      const storage = getStorage();
+      const newImageURLs = [];
+      for (let file of imageFiles) {
+        const storageRef = ref(storage, `products/${file.name}`);
+        await uploadBytesResumable(storageRef, file);
+        const imageURL = await getDownloadURL(storageRef);
+        newImageURLs.push(imageURL);
+      }
 
-    const productRef = doc(db, "products", selectedProduct.id);
-    await updateDoc(productRef, {
-      ...editableProduct,
-      sizes: editableProduct.sizes.split(", "),
-      // Merge existing images with new ones
-      images: [...editableProduct.images, ...newImageURLs]
-    });
+      const productRef = doc(db, "products", selectedProduct.id);
+      await updateDoc(productRef, {
+        ...editableProduct,
+        sizes: editableProduct.sizes.split(", "),
+        // Merge existing images with new ones
+        images: [...editableProduct.images, ...newImageURLs],
+      });
 
-    alert("Product updated successfully!");
-  } else {
-    alert("Please select a product to edit.");
-  }
-};
-
+      alert("Product updated successfully!");
+    } else {
+      alert("Please select a product to edit.");
+    }
+  };
+  // console.log("Type of products:", typeof products);
+  // console.log("Value of products:", products);
 
   return (
     <Grid container spacing={3}>
@@ -85,8 +94,7 @@ const EditProduct = () => {
               <Card onClick={() => handleProductSelect(product)}>
                 <CardMedia
                   component="img"
-                  image={product.images[0]}
-                  alt={product.name}
+                  image={product.images && product.images.length > 0 ? product.images[0] : "default_image_link"}
                 />
                 <CardContent>
                   <Typography variant="h6">{product.name}</Typography>
@@ -103,11 +111,13 @@ const EditProduct = () => {
             <ProductForm
               mode="edit"
               product={editableProduct}
-              handleChange={handleFormChange} 
-              handleImageChange={handleImageChange} 
+              handleChange={handleFormChange}
+              handleImageChange={handleImageChange}
               setImageFiles={setImageFiles}
-              imageURLs={editableProduct ? [...editableProduct.images, ...imageURLs] : []}
-              
+              setImageURLs={setImageURLs}
+              imageURLs={
+                editableProduct ? [...editableProduct.images, ...imageURLs] : []
+              }
             />
             <Button variant="contained" color="primary" onClick={handleUpdate}>
               Update Product

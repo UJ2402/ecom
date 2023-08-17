@@ -21,7 +21,7 @@ import { db } from "../Firebase";
 import { doc, deleteDoc } from "firebase/firestore";
 
 const DeleteProducts = () => {
-  const products = useContext(ProductsContext);
+  const {products} = useContext(ProductsContext);
   const [selectedProducts, setSelectedProducts] = useState([]);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -79,7 +79,7 @@ const DeleteProducts = () => {
         </Grid>
         
         <Grid container spacing={2}>
-          {products.map((product) => (
+        {Array.isArray(products) && products.map((product) => (
             <Grid item xs={12} sm={6} md={3} key={product.id}>
               <div style={{ position: "relative" }}>
                 <Checkbox

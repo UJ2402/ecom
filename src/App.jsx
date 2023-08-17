@@ -41,6 +41,10 @@ function App() {
   const [user, setUser] = useState();
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
+  const [filters, setFilters] = useState({
+    gender: [],
+    category: [],
+  });
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -59,11 +63,11 @@ function App() {
     const fetchAllProducts = async () => {
       const productsRef = collection(db, "products");
       const productsSnapshot = await getDocs(productsRef);
-      const productList = productsSnapshot.docs.map((doc) => ({
+      const productsList = productsSnapshot.docs.map((doc) => ({
         id: doc.id,
         ...doc.data(),
       }));
-      setProducts(productList);
+      setProducts(productsList);
     };
 
     fetchAllProducts();
@@ -73,7 +77,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <UserContext.Provider value={user}>
-        <ProductsContext.Provider value={products}>
+        <ProductsContext.Provider value={{ products, filters, setFilters }}>
           <BrowserRouter>
             <div
               style={{
