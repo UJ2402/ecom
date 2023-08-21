@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -15,6 +15,11 @@ const FilterDialog = ({ open, currentFilters, onClose, onApply }) => {
   const [categoryFilters, setCategoryFilters] = useState(
     currentFilters.category
   );
+
+  useEffect(() => {
+    setGenderFilters(currentFilters.gender);
+    setCategoryFilters(currentFilters.category);
+  }, [open, currentFilters]);
 
   const handleApply = () => {
     onApply({

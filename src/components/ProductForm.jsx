@@ -1,8 +1,11 @@
 import { Grid, TextField, FormControl, InputLabel, Select, MenuItem, Button, IconButton } from '@mui/material';
 import CloseIcon from "@mui/icons-material/Close";
 import PropTypes from 'prop-types';
+import { useRef } from 'react';
 
-const ProductForm = ({ product, handleChange, handleImageChange, imageURLs, setImageFiles, setImageURLs }) => {
+const ProductForm = ({ product, handleChange, handleImageChange, handleRemoveImage, imageURLs, oldImageURLs}) => {
+  const inputRef = useRef();
+
   return (
     <Grid container spacing={2}>
 
@@ -100,24 +103,21 @@ const ProductForm = ({ product, handleChange, handleImageChange, imageURLs, setI
                 borderRadius: "15px",
               }}
             />
-            <IconButton
-              onClick={() => {
-                const newImageFiles = [...setImageFiles];
-                newImageFiles.splice(index, 1);
-                setImageFiles(newImageFiles);
-
-                const newImageURLs = [...imageURLs];
-                newImageURLs.splice(index, 1);
-                setImageURLs(newImageURLs);
-              }}
-            >
-              <CloseIcon />
-            </IconButton>
+           <IconButton
+   onClick={() => {
+    const isNewImage = index >= oldImageURLs.length; // <-- Check if the image is new
+    handleRemoveImage(index, isNewImage); // Pass the flag here
+    inputRef.current.value = '';
+  }}
+>
+  <CloseIcon />
+</IconButton>
           </div>
         ))}
         <Button variant="contained" component="label">
           Add More Images
           <input
+            ref = {inputRef}
             type="file"
             multiple
             accept="image/*"
@@ -142,7 +142,12 @@ ProductForm.propTypes = {
     handleChange: PropTypes.func.isRequired,
     handleImageChange: PropTypes.func.isRequired,
     imageURLs: PropTypes.arrayOf(PropTypes.string).isRequired,
-    setImageFiles: PropTypes.func.isRequired,
-    setImageURLs: PropTypes.func.isRequired
+    oldImageURLs: PropTypes.arrayOf(PropTypes.string).isRequired, 
+    // setImageFiles: PropTypes.func.isRequired,
+    // setImageURLs: PropTypes.func.isRequired,
+    // imageFiles: PropTypes.arrayOf(PropTypes.instanceOf(File)),
+    handleRemoveImage: PropTypes.func.isRequired,
+
+
   }
 export default ProductForm;

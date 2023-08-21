@@ -47,9 +47,11 @@ const AddProduct = () => {
 
   const handleImageChange = (e) => {
     const selectedFiles = Array.from(e.target.files);
-    setImageFiles(selectedFiles);
-    const urls = [...e.target.files].map((file) => URL.createObjectURL(file));
-    setImageURLs(urls);
+    const newImageFiles = [...imageFiles, ...selectedFiles];
+
+    setImageFiles(newImageFiles);
+    const newImageURLs  = [...imageURLs, ...selectedFiles.map((file) => URL.createObjectURL(file))];
+    setImageURLs(newImageURLs);
   };
 
   const handleSubmit = async (e) => {
@@ -141,6 +143,7 @@ const AddProduct = () => {
         imageURLs={imageURLs}
         setImageFiles={setImageFiles}
         setImageURLs={setImageURLs}
+        imageFiles={imageFiles}
       />
       <Button
         type="submit"

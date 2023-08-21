@@ -1,7 +1,11 @@
 import Banner from "../components/Banner";
+import { useContext } from "react";
 import { Grid } from "@mui/material";
+import BestSeller from "../components/BestSeller";
+import { ProductsContext } from "../components/ProductsContext";
 
 const HomePage = () => {
+  const {products} = useContext(ProductsContext);
   return (
     <div>
       <Grid
@@ -12,7 +16,7 @@ const HomePage = () => {
       >
         <Banner />
         <h1 style={{ alignItems: "left" }}>Our Bestsellers</h1>
-        {/* <ProductGrid /> */}
+        <BestSeller  allProducts={products}/>
       </Grid>
     </div>
   );

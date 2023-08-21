@@ -20,8 +20,9 @@ import {
 
 const EditProduct = () => {
   const { products } = useContext(ProductsContext);
-  const [imageURLs, setImageURLs] = useState([]);
-  const [imageFiles, setImageFiles] = useState([]);
+  const [oldImageURLs, setOldImageURLs] = useState([]);
+  const [newImageFiles, setNewImageFiles] = useState([]);
+  const [newImageURLs, setNewImageURLs] = useState([]);
 
   const [editableProduct, setEditableProduct] = useState(null);
 
@@ -30,6 +31,7 @@ const EditProduct = () => {
   const handleProductSelect = (product) => {
     setSelectedProduct(product);
     setEditableProduct({ ...product, sizes: product.sizes.join(", ") });
+    setOldImageURLs(product.images);
   };
 
   const handleImageChange = (e) => {
@@ -37,10 +39,10 @@ const EditProduct = () => {
     const newImageURLs = selectedFiles.map((file) => URL.createObjectURL(file));
 
     // Merge old imageFiles and new selectedFiles
-    setImageFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
+    setNewImageFiles((prevFiles) => [...prevFiles, ...selectedFiles]);
 
     // Merge old imageURLs and newImageURLs
-    setImageURLs((prevURLs) => [...prevURLs, ...newImageURLs]);
+    setNewImageURLs((prevURLs) => [...prevURLs, ...newImageURLs]);
   };
 
   const handleFormChange = (e) => {
@@ -52,20 +54,41 @@ const EditProduct = () => {
     }
   };
 
+  const handleRemoveImage = (index, isNew) => {
+    if (isNew) {
+      const newFiles = [...newImageFiles];
+      const newURLs = [...newImageURLs];
+      newFiles.splice(index, 1);
+      newURLs.splice(index, 1);
+      setNewImageFiles(newFiles);
+      setNewImageURLs(newURLs);
+    } else {
+      // This is an existing image, remove its URL from the oldImageURLs state
+      const newURLs = [...oldImageURLs];
+      newURLs.splice(index, 1);
+      setOldImageURLs(newURLs);
+      // The actual deletion of the image from Firebase Storage will be handled by a Cloud Function
+    }
+  };
+
   const handleUpdate = async () => {
-    if (editableProduct.images.length === 0) {
+    const allImages = [...oldImageURLs, ...newImageURLs];
+    if (allImages.length === 0) {
       alert("Please add at least one image.");
       return;
     }
+
     if (selectedProduct) {
       // Upload new images to Firebase Storage and get their URLs
       const storage = getStorage();
-      const newImageURLs = [];
-      for (let file of imageFiles) {
-        const storageRef = ref(storage, `products/${file.name}`);
+      const uploadedImageURLs = [];
+      for (let file of newImageFiles) {
+        const uniqueName = `${file.name}_${Date.now()}`;
+        const storageRef = ref(storage, `products/${uniqueName}`);
+
         await uploadBytesResumable(storageRef, file);
         const imageURL = await getDownloadURL(storageRef);
-        newImageURLs.push(imageURL);
+        uploadedImageURLs.push(imageURL);
       }
 
       const productRef = doc(db, "products", selectedProduct.id);
@@ -73,16 +96,16 @@ const EditProduct = () => {
         ...editableProduct,
         sizes: editableProduct.sizes.split(", "),
         // Merge existing images with new ones
-        images: [...editableProduct.images, ...newImageURLs],
+        images: [...oldImageURLs, ...uploadedImageURLs],
       });
 
       alert("Product updated successfully!");
+      setNewImageFiles([]);
+      setNewImageURLs([]);
     } else {
       alert("Please select a product to edit.");
     }
   };
-  // console.log("Type of products:", typeof products);
-  // console.log("Value of products:", products);
 
   return (
     <Grid container spacing={3}>
@@ -94,7 +117,11 @@ const EditProduct = () => {
               <Card onClick={() => handleProductSelect(product)}>
                 <CardMedia
                   component="img"
-                  image={product.images && product.images.length > 0 ? product.images[0] : "default_image_link"}
+                  image={
+                    product.images && product.images.length > 0
+                      ? product.images[0]
+                      : "default_image_link"
+                  }
                 />
                 <CardContent>
                   <Typography variant="h6">{product.name}</Typography>
@@ -113,20 +140,19 @@ const EditProduct = () => {
               product={editableProduct}
               handleChange={handleFormChange}
               handleImageChange={handleImageChange}
-              setImageFiles={setImageFiles}
-              setImageURLs={setImageURLs}
-              imageURLs={
-                editableProduct ? [...editableProduct.images, ...imageURLs] : []
-              }
+              oldImageURLs={oldImageURLs}
+              setImageFiles={setNewImageFiles}
+              imageFiles={newImageFiles}
+              setImageURLs={setNewImageURLs}
+              handleRemoveImage={handleRemoveImage}
+              imageURLs={[...oldImageURLs, ...newImageURLs]}
             />
             <Button variant="contained" color="primary" onClick={handleUpdate}>
               Update Product
             </Button>
           </>
         ) : (
-          <Typography>
-            Select a product from the left to edit its details.
-          </Typography>
+          <Typography>Select a product to edit its details.</Typography>
         )}
       </Grid>
     </Grid>

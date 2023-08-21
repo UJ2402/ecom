@@ -22,7 +22,10 @@ import {
   isProductInWishlist,
 } from "../Firebase";
 import { useTheme } from "@emotion/react";
+// import { WishlistContext } from "./WishlistContext";
+
 export const ProductCard = ({ product, initialInWishlist = false }) => {
+  // const { refreshWishlist } = useContext(WishlistContext);
   const [isInWishlist, setIsInWishlist] = useState(initialInWishlist);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState("");
@@ -51,9 +54,13 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
       }
     };
     checkWishlistStatus();
-  }, [product, user]);
+  }, []);
+  
 
-  const imageSrc = product.images && product.images.length ? product.images[0] : "";
+  
+
+  const imageSrc =
+    product && product.images && product.images.length ? product.images[0] : "";
 
   const handleWishlistToggle = async (event) => {
     event.stopPropagation();
@@ -70,6 +77,7 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
           setSnackbarMessage("Added to wishlist");
         }
         setSnackbarOpen(true);
+        // refreshWishlist();
       } else {
         console.log(user, user.uid);
         alert("login karlo");
@@ -81,7 +89,7 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
     }
   };
   return (
-    <Grid item xs={12} sm={6} md={4} lg={2} key={product.id}>
+    <Grid item xs={12} sm={4} md={2} lg={2} key={product.id}>
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
@@ -110,7 +118,6 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
           <Skeleton variant="rectangular" width="100%" height="79%" />
         )}
         <CardMedia
-        
           component="img"
           image={imageSrc}
           alt={product.name}

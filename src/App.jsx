@@ -18,10 +18,9 @@ import AdminPage from "./Pages/AdminPage";
 import MenProductPage from "./Pages/AllProductsPage";
 import UpdatePricesPage from "./components/UpdatePricesPage";
 import Wishlist from "./Pages/Wishlist";
-import { ProductsContext } from "./components/ProductsContext.jsx";
-import { collection, getDocs } from "firebase/firestore";
-import { db } from "./Firebase";
 // import MigrateImageField from "./components/MigrateImageField";
+import { ProductsProvider } from "./components/ProductsContext.jsx";
+import { WishlistProvider } from "./components/WishlistContext";
 
 export const UserContext = createContext();
 
@@ -40,11 +39,7 @@ const theme = createTheme({
 function App() {
   const [user, setUser] = useState();
   const dispatch = useDispatch();
-  const [products, setProducts] = useState([]);
-  const [filters, setFilters] = useState({
-    gender: [],
-    category: [],
-  });
+  
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -60,25 +55,18 @@ function App() {
       }
     });
 
-    const fetchAllProducts = async () => {
-      const productsRef = collection(db, "products");
-      const productsSnapshot = await getDocs(productsRef);
-      const productsList = productsSnapshot.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-      setProducts(productsList);
-    };
+   
 
-    fetchAllProducts();
+    
 
     return () => unsubscribe();
   }, [dispatch]);
   return (
     <ThemeProvider theme={theme}>
       <UserContext.Provider value={user}>
-        <ProductsContext.Provider value={{ products, filters, setFilters }}>
-          <BrowserRouter>
+        <BrowserRouter>
+          <WishlistProvider>
+          <ProductsProvider>
             <div
               style={{
                 width: "100%",
@@ -116,8 +104,9 @@ function App() {
               </Grid>
               <Footer />
             </div>
-          </BrowserRouter>
-        </ProductsContext.Provider>
+          </ProductsProvider>
+          </WishlistProvider>
+        </BrowserRouter>
       </UserContext.Provider>
     </ThemeProvider>
   );
