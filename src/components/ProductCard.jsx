@@ -54,7 +54,7 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
       }
     };
     checkWishlistStatus();
-  }, []);
+  }, [product.id, user]);
   
 
   

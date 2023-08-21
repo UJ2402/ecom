@@ -1,6 +1,6 @@
 import Banner from "../components/Banner";
 import { useContext } from "react";
-import { Grid } from "@mui/material";
+import { Grid, Typography } from "@mui/material";
 import BestSeller from "../components/BestSeller";
 import { ProductsContext } from "../components/ProductsContext";
 
@@ -12,10 +12,10 @@ const HomePage = () => {
         container
         spacing={2}
         justifyContent="center"
-        sx={{ width: "100%", marginTop: -1, ml: 1 }}
+        sx={{ width: "100%", marginTop: "0", ml: "1px" }}
       >
         <Banner />
-        <h1 style={{ alignItems: "left" }}>Our Bestsellers</h1>
+        <Typography sx={{pt:2, fontWeight: 'regular'}} variant="h2">Our Bestsellers</Typography>
         <BestSeller  allProducts={products}/>
       </Grid>
     </div>

@@ -1,5 +1,8 @@
 import { useState } from 'react';
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import NavigateBeforeIcon from '@mui/icons-material/NavigateBefore';
+import NavigateNextIcon from '@mui/icons-material/NavigateNext';
+
 import { Carousel } from "react-responsive-carousel";
 import shopMenImage from "../assets/ShopMen.png"
 import shopWomenImage from "../assets/ShopWomen.png"
@@ -12,7 +15,7 @@ function Banner() {
 
   const imageContainerStyle = {
     position: 'relative',
-    border: '2px solid #000'
+    // border: '2px solid #000'
   };
 
   const imageTextStyle = {
@@ -28,11 +31,11 @@ function Banner() {
     fontWeight: 'bold',
     fontFamily: 'Arial, sans-serif',
     textAlign: 'center',
-    transition: '0.3s',
+    transition: '0.2s',
   };
 
   const imageTextHoverStyle = {
-    // border: '2px solid black',
+    
     backgroundColor: 'rgba(10, 10, 0, 0.1)'
   };
 
@@ -43,6 +46,43 @@ function Banner() {
   const handleMouseLeave = () => {
     setHoverIndex(null);
   };
+  const customArrowStyle = {
+    backgroundColor: 'rgba(0,0,0,0.5)', // You can customize this as per your needs
+    borderRadius: '50%',
+    width: '40px',
+    height: '40px',
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    color: 'white',
+    cursor: 'pointer',
+    zIndex: 2
+  };
+
+  const arrowPrev = (onClickHandler, hasPrev) => {
+    if(!hasPrev) return null; // Don't render if there's no previous slide
+    return (
+      <div 
+        style={{ ...customArrowStyle, position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)' }}
+        onClick={onClickHandler}
+      >
+        <NavigateBeforeIcon />
+      </div>
+    );
+  }
+
+  const arrowNext = (onClickHandler, hasNext) => {
+    if(!hasNext) return null; // Don't render if there's no next slide
+    return (
+      <div 
+        style={{ ...customArrowStyle, position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)' }}
+        onClick={onClickHandler}
+      >
+        <NavigateNextIcon />
+      </div>
+    );
+  }
+
   
   return (
     <Carousel
@@ -52,6 +92,9 @@ function Banner() {
       showThumbs={false}
       interval={4000}
       width= "100%"
+      showArrows={false}
+      renderArrowPrev={arrowPrev} 
+      renderArrowNext={arrowNext}
     >
       <div style={imageContainerStyle}>
         <img loading="lazy" src={shopMenImage} alt="Shop Men" />

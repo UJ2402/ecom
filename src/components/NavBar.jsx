@@ -2,17 +2,14 @@ import { UserContext } from "../App";
 import {
   Avatar,
   Badge,
-  Drawer,
   InputAdornment,
-  List,
-  ListItem,
-  ListItemText,
   TextField,
 } from "@mui/material";
 import { useState } from "react";
 import { useContext } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Person, Help, ShoppingBag } from "@mui/icons-material";
+import StorefrontIcon from '@mui/icons-material/Storefront';
 import {
   AppBar,
   Toolbar,
@@ -23,7 +20,6 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
-import MenuIcon from "@mui/icons-material/Menu";
 import { useSelector } from "react-redux";
 import { selectCartItems } from "./cart/CartSlice";
 function NavBar() {
@@ -32,15 +28,11 @@ function NavBar() {
   const theme = useTheme();
   const handleNavigate = (path) => {
     navigate(path);
-    setOpen(false);
   };
 
-  const [open, setOpen] = useState(false);
   const [searchValue, setSearchValue] = useState("");
 
-  const handleSidebar = () => {
-    setOpen(!open);
-  };
+  
 
   const cartItems = useSelector(selectCartItems);
 
@@ -59,23 +51,17 @@ function NavBar() {
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <Toolbar>
         <IconButton
+        
           size="large"
           edge="start"
           color="inherit"
           aria-label="logo"
-          onClick={handleSidebar}
-          sx={{ pl: 3 }}
+          onClick={() => handleNavigate(`/allProducts`)}
+          sx={{ pl: 1 }}
         >
-          <MenuIcon />
+          <StorefrontIcon />
         </IconButton>
-        <Drawer anchor="left" open={open} onClose={handleSidebar}>
-          <List>
-            <ListItem button onClick={() => handleNavigate(`/allProducts`)}>
-              <ListItemText primary="Shop" />
-            </ListItem>
-            {/* Add more items as needed */}
-          </List>
-        </Drawer>
+       
         <Typography
           variant="h6"
           component="div"
@@ -89,7 +75,7 @@ function NavBar() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            maxWidth: "200px",
+            maxWidth: "150px",
             mr: "2%",
           }}
         >
