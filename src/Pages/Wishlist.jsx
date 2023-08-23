@@ -2,13 +2,12 @@ import { useState, useEffect, useContext } from "react";
 import { db } from "../Firebase";
 import { UserContext } from "../App";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { ProductCard } from "../components/ProductCard"; 
+import { ProductCard } from "../Components/ProductCard";
 import { Grid } from "@mui/material";
 
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const user = useContext(UserContext);
-  
 
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -42,7 +41,11 @@ const Wishlist = () => {
       <Grid item>
         <h1>Your Wishlist</h1>
         {wishlistItems.map((product) => (
-          <ProductCard key={product.id} product={product} initialInWishlist={true}/>
+          <ProductCard
+            key={product.id}
+            product={product}
+            initialInWishlist={true}
+          />
         ))}
       </Grid>
     </Grid>

@@ -1,15 +1,10 @@
 import { UserContext } from "../App";
-import {
-  Avatar,
-  Badge,
-  InputAdornment,
-  TextField,
-} from "@mui/material";
+import { Avatar, Badge, InputAdornment, TextField } from "@mui/material";
 import { useState } from "react";
 import { useContext } from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import { Person, Help, ShoppingBag } from "@mui/icons-material";
-import StorefrontIcon from '@mui/icons-material/Storefront';
+import StorefrontIcon from "@mui/icons-material/Storefront";
 import {
   AppBar,
   Toolbar,
@@ -21,7 +16,7 @@ import {
 import { useTheme } from "@mui/material/styles";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { selectCartItems } from "./cart/CartSlice";
+import { selectCartItems } from "./Cart/CartSlice";
 function NavBar() {
   const user = useContext(UserContext);
   const navigate = useNavigate();
@@ -32,8 +27,6 @@ function NavBar() {
 
   const [searchValue, setSearchValue] = useState("");
 
-  
-
   const cartItems = useSelector(selectCartItems);
 
   const totalItems = Object.values(cartItems).reduce(
@@ -43,7 +36,7 @@ function NavBar() {
 
   const handleSearch = (searchValue) => {
     if (searchValue.trim() !== "") {
-      navigate(`/allProducts?search=${searchValue}`, { replace :true});
+      navigate(`/allProducts?search=${searchValue}`, { replace: true });
     }
   };
 
@@ -51,7 +44,6 @@ function NavBar() {
     <AppBar position="sticky" sx={{ width: "100%" }}>
       <Toolbar>
         <IconButton
-        
           size="large"
           edge="start"
           color="inherit"
@@ -61,7 +53,7 @@ function NavBar() {
         >
           <StorefrontIcon />
         </IconButton>
-       
+
         <Typography
           variant="h6"
           component="div"
@@ -87,19 +79,21 @@ function NavBar() {
               setSearchValue(e.target.value);
               handleSearch(e.target.value);
               if (!e.target.value.trim()) {
-                navigate('/', { replace: true });
-
-              } 
+                navigate("/", { replace: true });
+              }
             }}
             placeholder="search..."
             fullWidth
             style={{
               backgroundColor: theme.palette.secondary.main,
               boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
-              borderRadius: "35px",
-              // height: "0"
+              borderRadius: "25px",
+              // height: "50p"
             }}
             InputProps={{
+              style: {
+                padding: "0px 5px", // Adjust this value to reduce the height
+              },
               startAdornment: (
                 <InputAdornment position="start">
                   <IconButton>
@@ -107,6 +101,14 @@ function NavBar() {
                   </IconButton>
                 </InputAdornment>
               ),
+              disableUnderline: true,
+              
+            }}
+            sx={{
+              "& .Mui-focused": {
+                outline: "none",
+                boxShadow: "none",
+              },
             }}
           />
         </Box>

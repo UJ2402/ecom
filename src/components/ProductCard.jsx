@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import PropTypes from "prop-types";
-import { formatNumberWithCommas } from "../components/utils";
+import { formatNumberWithCommas } from "./utils";
 import {
   Grid,
   CardMedia,
@@ -55,9 +55,6 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
     };
     checkWishlistStatus();
   }, [product.id, user]);
-  
-
-  
 
   const imageSrc =
     product && product.images && product.images.length ? product.images[0] : "";

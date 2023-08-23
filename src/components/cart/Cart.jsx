@@ -14,7 +14,7 @@ import {
   IconButton,
   Typography,
 } from "@mui/material";
-import { formatNumberWithCommas } from "./../utils";
+import { formatNumberWithCommas } from "../utils";
 
 import React, { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../App";
@@ -103,7 +103,7 @@ const Cart = () => {
               >
                 <CardMedia
                   component="img"
-                  image={productInfo.image}
+                  image={productInfo.images[0]}
                   sx={{ width: "200px", height: "auto" }}
                 />
                 <CardContent sx={{ flex: "1" }}>
@@ -123,7 +123,8 @@ const Cart = () => {
                     Price: ₹{formatNumberWithCommas(productInfo.price)}
                   </Typography>
                   <Typography mt={12} variant="h6">
-                    Total Price: ₹{formatNumberWithCommas(productInfo.price * count)}
+                    Total Price: ₹
+                    {formatNumberWithCommas(productInfo.price * count)}
                   </Typography>
                 </CardContent>
                 <IconButton

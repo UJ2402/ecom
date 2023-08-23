@@ -1,11 +1,11 @@
-import Banner from "../components/Banner";
+import Banner from "../Components/Banner";
 import { useContext } from "react";
 import { Grid, Typography } from "@mui/material";
-import BestSeller from "../components/BestSeller";
-import { ProductsContext } from "../components/ProductsContext";
+import BestSeller from "../Components/BestSeller";
+import { ProductsContext } from "../Components/ProductsContext";
 
 const HomePage = () => {
-  const {products} = useContext(ProductsContext);
+  const { products } = useContext(ProductsContext);
   return (
     <div>
       <Grid
@@ -15,8 +15,10 @@ const HomePage = () => {
         sx={{ width: "100%", marginTop: "0", ml: "1px" }}
       >
         <Banner />
-        <Typography sx={{pt:2, fontWeight: 'regular'}} variant="h2">Our Bestsellers</Typography>
-        <BestSeller  allProducts={products}/>
+        <Typography sx={{ pt: 2, fontWeight: "regular" }} variant="h2">
+          Our Bestsellers
+        </Typography>
+        <BestSeller allProducts={products} />
       </Grid>
     </div>
   );

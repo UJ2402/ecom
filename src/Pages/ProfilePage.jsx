@@ -1,7 +1,7 @@
-import { clearCartData } from "../components/cart/CartSlice";
+import { clearCartData } from "../Components/Cart/CartSlice";
 import { db } from "../Firebase";
 import { Button, Grid, Typography } from "@mui/material";
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { auth } from "../Firebase";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -9,10 +9,9 @@ import { doc, getDoc } from "firebase/firestore";
 
 const ProfilePage = () => {
   const [user, setUser] = useState(null);
-  const [ isAdmin, setIsAdmin] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -24,7 +23,6 @@ const ProfilePage = () => {
         if (adminDocSnap.exists() && adminDocSnap.data().isadmin === true) {
           setIsAdmin(true); // Set the admin status
         }
-        
       } else {
         setUser(null);
         setIsAdmin(false);
@@ -37,7 +35,7 @@ const ProfilePage = () => {
   const fullName = user?.displayName;
   const firstName = fullName ? fullName.split(" ")[0] : null;
 
-  const handleSignOut = () => { 
+  const handleSignOut = () => {
     dispatch(clearCartData());
     auth
       .signOut()
@@ -74,12 +72,13 @@ const ProfilePage = () => {
         sx={{ my: 4, textAlign: "center" }}
       >
         <Typography variant="h6">Your email: {user?.email}</Typography>
-        <Button onClick={() => navigate("/profilePage/wishlist")}>Wishlist</Button>
+        <Button onClick={() => navigate("/profilePage/wishlist")}>
+          Wishlist
+        </Button>
         <Button onClick={handleSignOut}>Sign Out</Button>
         {isAdmin && ( // Conditionally render the Admin Page button
-        <Button onClick={() => navigate("/adminPage")}>Admin Page</Button>
-      )}
-        
+          <Button onClick={() => navigate("/adminPage")}>Admin Page</Button>
+        )}
       </Grid>
     </Grid>
   );
