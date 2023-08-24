@@ -71,6 +71,7 @@ function App() {
               >
                 <Grid
                   container
+                  justifyContent="center"
                   sx={{ width: "100%" }}
                 >
                   <NavBar />

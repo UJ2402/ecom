@@ -61,6 +61,11 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
 
   const handleWishlistToggle = async (event) => {
     event.stopPropagation();
+    if (!user || !user.uid) {
+      setSnackbarMessage("Please login to wishlist items");
+      setSnackbarOpen(true);
+      return;
+    } 
     setIsInWishlist((prevState) => !prevState);
     try {
       if (user && user.uid) {
@@ -85,8 +90,11 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
       setSnackbarOpen(true);
     }
   };
+  const snackbarSeverity = snackbarMessage === "Please login to wishlist items" ? "warning" : "success";
+
   return (
     <Grid item xs={12} sm={4} md={2} lg={2} key={product.id}>
+      
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={3000}
@@ -95,7 +103,7 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
       >
         <Alert
           onClose={() => setSnackbarOpen(false)}
-          severity="success"
+          severity={snackbarSeverity}
           variant="filled"
           sx={{
             width: "100%",

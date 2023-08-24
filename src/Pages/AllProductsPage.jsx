@@ -61,9 +61,9 @@ const AllProductsPage = () => {
     );
   }
 
-  if (!user || !user.uid) {
-    return <CircularProgress />;
-  }
+  // if (!user || !user.uid) {
+  //   return <CircularProgress />;
+  // }
 
   return (
     <div>

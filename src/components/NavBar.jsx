@@ -41,7 +41,7 @@ function NavBar() {
   };
 
   return (
-    <AppBar position="sticky" sx={{ width: "100%" }}>
+    <AppBar position="sticky"  sx={{ width: "100%" }} >
       <Toolbar>
         <IconButton
           size="large"
