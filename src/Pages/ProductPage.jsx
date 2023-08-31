@@ -109,8 +109,8 @@ const ProductPage = () => {
   console.log("Type of Price:", typeof productInfo.price);
   // console.log(size, quantity);
   return (
-    <Grid item my={10} container spacing={2}>
-      <Grid item lg={3} sx={{ ml: 12 }}>
+    <Grid item my={10} container spacing={0}>
+      <Grid item lg={3} sx={{ ml: 5 }}>
         {productInfo.images && productInfo.images.length > 0 && (
           <>
             <Img

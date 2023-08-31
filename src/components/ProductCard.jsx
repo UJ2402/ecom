@@ -24,7 +24,7 @@ import {
 import { useTheme } from "@emotion/react";
 // import { WishlistContext } from "./WishlistContext";
 
-export const ProductCard = ({ product, initialInWishlist = false }) => {
+export const ProductCard = ({ product, initialInWishlist = false, onRemoveFromWishlist}) => {
   // const { refreshWishlist } = useContext(WishlistContext);
   const [isInWishlist, setIsInWishlist] = useState(initialInWishlist);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
@@ -42,6 +42,7 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
       images: PropTypes.arrayOf(PropTypes.string),
     }).isRequired,
     initialInWishlist: PropTypes.bool,
+    onRemoveFromWishlist: PropTypes.func,
   };
 
   const user = useContext(UserContext);
@@ -73,6 +74,7 @@ export const ProductCard = ({ product, initialInWishlist = false }) => {
           await removeFromWishlist(user.uid, product.id);
           setIsInWishlist(false);
           setSnackbarMessage("Removed from wishlist");
+          onRemoveFromWishlist && onRemoveFromWishlist(product.id);
         } else {
           await addToWishlist(user.uid, product);
           setIsInWishlist(true);

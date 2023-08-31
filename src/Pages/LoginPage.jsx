@@ -1,5 +1,6 @@
 import { Button, Grid } from "@mui/material";
 import { useEffect } from "react";
+import GoogleIcon from '@mui/icons-material/Google';
 import { auth } from "../Firebase";
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth";
 import { useCallback, useContext } from "react";
@@ -8,12 +9,10 @@ import { UserContext } from "../App";
 import { db } from "../Firebase";
 import updateCartFromFirestore from "../Components/Cart/CartSlice";
 
+
 const LoginPage = () => {
   const user = useContext(UserContext);
-  // console.log(user);
-  // const signOut = useCallback(() => {
-  //   auth.signOut();
-  // }, []);
+
   const signInWithGoogle = useCallback(() => {
     signInWithPopup(auth, new GoogleAuthProvider()).then(() => {});
   }, []);
@@ -41,13 +40,29 @@ const LoginPage = () => {
   }, [user]);
 
   return (
-    <Grid item>
+    <Grid container sx={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
       {user ? (
-        <div>
-          <ProfilePage />
-        </div>
+        <ProfilePage />
       ) : (
-        <Button onClick={signInWithGoogle}>Sign in with google</Button>
+        <Button 
+          sx={{ 
+            backgroundColor: '#000000', 
+            color: 'white', 
+            padding: 2,
+            marginTop: '10vh',
+            '&:hover': {
+              backgroundColor: '#8BC292',
+              color: '#000000'
+            },
+            '& .MuiButton-startIcon': {
+              marginRight: 1,
+            }
+          }} 
+          startIcon={<GoogleIcon />} 
+          onClick={signInWithGoogle}
+        >
+          Sign in with Google
+        </Button>
       )}
     </Grid>
   );

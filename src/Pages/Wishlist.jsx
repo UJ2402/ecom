@@ -8,7 +8,7 @@ import { Grid } from "@mui/material";
 const Wishlist = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const user = useContext(UserContext);
-
+  
   useEffect(() => {
     const fetchWishlist = async () => {
       if (user && user.uid) {
@@ -36,18 +36,24 @@ const Wishlist = () => {
 
     fetchWishlist();
   }, [user]);
+
+  const handleRemoveFromWishlist = (productId) => {
+    setWishlistItems(prevItems => prevItems.filter(item => item.id !== productId));
+  };
   return (
-    <Grid container>
-      <Grid item>
+    <Grid container spacing={3}>
+      <Grid item xs={12}>
         <h1>Your Wishlist</h1>
+        </Grid>
         {wishlistItems.map((product) => (
           <ProductCard
             key={product.id}
             product={product}
             initialInWishlist={true}
+            onRemoveFromWishlist={() => handleRemoveFromWishlist(product.id)}
           />
         ))}
-      </Grid>
+      
     </Grid>
   );
 };

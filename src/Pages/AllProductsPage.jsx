@@ -11,9 +11,18 @@ import FilterListIcon from "@mui/icons-material/FilterList";
 import { WishlistContext } from "../Components/WishlistContext";
 
 const AllProductsPage = () => {
-  const { products, filters, setFilters } = useContext(ProductsContext);
+  const {
+    products,
+    filters,
+    setFilters,
+    isLoading: isProductsLoading,
+  } = useContext(ProductsContext);
+ 
+  
+
   const user = useContext(UserContext);
-  const { userWishlist, isLoading } = useContext(WishlistContext);
+  const { userWishlist } =
+    useContext(WishlistContext);
   const [searchParams] = useSearchParams();
   const searchQuery = searchParams.get("search");
   const [filterDialogOpen, setFilterDialogOpen] = useState(false);
@@ -47,11 +56,14 @@ const AllProductsPage = () => {
     setFilters(newFilters);
   };
 
-  if (isLoading) {
+  if (isProductsLoading || (user && !userWishlist)) {
     return <CircularProgress />;
   }
 
-  if (!displayedProducts || displayedProducts.length === 0) {
+  if (!user && isProductsLoading) {
+    return <CircularProgress />;
+  }
+  if (displayedProducts.length === 0) {
     return (
       <div>
         <Typography variant="h4" sx={{ pt: 2 }}>
@@ -67,7 +79,7 @@ const AllProductsPage = () => {
 
   return (
     <div>
-      <Grid item container spacing={3} width="100%">
+      <Grid item container spacing={4} width="100%">
         {displayedProducts.map(
           (product) =>
             product && (

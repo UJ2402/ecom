@@ -66,13 +66,13 @@ function App() {
                 style={{
                   display: "flex",
                   flexDirection: "column",
-                  minHeight: "100vh",
+                  height: "100vh",
                 }}
               >
                 <Grid
                   container
                   justifyContent="center"
-                  sx={{ width: "100%" }}
+                  sx={{ width: "100vw" }}
                 >
                   <NavBar />
                   <Routes>
