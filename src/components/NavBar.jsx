@@ -88,7 +88,7 @@ function NavBar() {
               backgroundColor: theme.palette.secondary.main,
               boxShadow: "0px 0px 5px rgba(0, 0, 0, 0.1)",
               borderRadius: "25px",
-              // height: "50p"
+              // height: "50px"
             }}
             InputProps={{
               style: {

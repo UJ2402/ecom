@@ -98,7 +98,7 @@ const ProductForm = ({ product, handleChange, handleImageChange, handleRemoveIma
               src={url}
               alt="preview"
               style={{
-                width: "100%",
+                width: "50%", //<-Here
                 height: "auto",
                 borderRadius: "15px",
               }}

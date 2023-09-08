@@ -14,7 +14,7 @@ const BestSeller = ({ allProducts }) => {
   const scrollAmount = 300; // Adjust this value according to your needs
   
   // Fetch 12 random products
-  const randomProducts = allProducts.sort(() => 0.5 - Math.random()).slice(0, 12);
+  const randomProducts = allProducts.sort(() => 0.5 - Math.random()).slice(0, 6);
 
   const scrollContainerRef = React.useRef(null);
 
@@ -38,9 +38,8 @@ const BestSeller = ({ allProducts }) => {
         style={{ position: 'absolute', left: 0,  top: '50%', transform: 'translateY(-50%)' }}
         onClick={handleScrollLeft}
       >
-        <ArrowBackIosIcon />
       </IconButton>
-      <Grid container spacing={3} wrap="nowrap" ref={scrollContainerRef} style={{ overflowX: 'auto', gap: '16px', whiteSpace: 'wrap' }}>
+      <Grid container spacing={2} wrap="nowrap" ref={scrollContainerRef} style={{ overflowX: 'auto', gap: '16px', whiteSpace: 'wrap' }}>
         {randomProducts.map(product => (
           <ProductCard key={product.id} product={product}
           initialInWishlist={userWishlist.includes(product.id)} />
@@ -50,7 +49,6 @@ const BestSeller = ({ allProducts }) => {
         style={{ position: 'absolute', right: 0, top: '50%', transform: 'translateY(-50%)' }}
         onClick={handleScrollRight}
       >
-        <ArrowForwardIosIcon />
       </IconButton>
     </Box>
   );
